@@ -6,12 +6,16 @@ import { engine } from '@/engine/simulation';
 interface SimulationStore {
   state: any;
   isLoaded: boolean;
+  toasts: { id: string; message: string; type: 'success' | 'error' | 'info' }[];
+  addToast: (message: string, type?: 'success' | 'error' | 'info') => void;
+  removeToast: (id: string) => void;
   initialize: () => Promise<void>;
   advanceDay: () => void;
   advanceTime: (days: number) => void;
   resetSimulation: () => void;
   addOrder: (order: any) => void;
   deployLoom: (loomId: string, designId: string) => void;
+  createProductionJob: (designId: string, warpId: string, model: string) => void;
   addProductionJob: (job: any) => void;
   assignLoomToJob: (jobId: string, loomId?: string) => void;
   updateLoomState: (loomId: string, updates: any) => void;
@@ -23,6 +27,7 @@ interface SimulationStore {
   addPurchaseOrder: (po: any) => void;
   addMaterial: (mat: any) => void;
   incrementSareeCount: (loomId: string) => void;
+  registerDispatchTransaction: (loomId: string) => void;
 }
 
 export const useSimulationStore = create<SimulationStore>((set, get) => {
@@ -33,6 +38,19 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
   return {
     state: null,
     isLoaded: false,
+    toasts: [],
+    
+    addToast: (message: string, type = 'success') => {
+       const id = Math.random().toString(36).substring(2, 9);
+       set((state) => ({ toasts: [...state.toasts, { id, message, type: type as any }] }));
+       setTimeout(() => {
+          set((state) => ({ toasts: state.toasts.filter(t => t.id !== id) }));
+       }, 3000);
+    },
+
+    removeToast: (id: string) => {
+       set((state) => ({ toasts: state.toasts.filter(t => t.id !== id) }));
+    },
     
     initialize: async () => {
       if (get().isLoaded) return;
@@ -57,6 +75,10 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
 
     deployLoom: (loomId: string, designId: string) => {
       engine.deployLoom(loomId, designId);
+    },
+
+    createProductionJob: (designId: string, warpId: string, model: string) => {
+      engine.createProductionJob(designId, warpId, model);
     },
 
     addProductionJob: (job: any) => {
@@ -101,6 +123,10 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
 
     incrementSareeCount: (loomId: string) => {
       engine.incrementSareeCount(loomId);
+    },
+
+    registerDispatchTransaction: (loomId: string) => {
+      engine.registerDispatchTransaction(loomId);
     }
   };
 });
@@ -134,6 +160,9 @@ export const useCoopStore = (selector: (state: any) => any) => {
     })),
     pendingExecutions: state?.pendingExecutions || [],
     dailySnapshots: state?.dailySnapshots || [],
+    createProductionJob: (designId: string, warpId: string, model: string, warpDetails?: any) => {
+      engine.createProductionJob(designId, warpId, model, warpDetails);
+    },
     deployLoom: (loomId: string, designId: string) => {
       engine.deployLoom(loomId, designId);
     },

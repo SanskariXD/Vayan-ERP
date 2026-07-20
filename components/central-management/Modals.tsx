@@ -6,17 +6,16 @@ import { X, Plus, Package, Layers, Truck, Palette } from 'lucide-react';
 
 // --- 1. ADD EXISTING DESIGN MODAL ---
 export function AddDesignModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
-  const addManualDesign = useCoopStore((s: any) => s.addManualDesign);
+  const queueDesign = useCoopStore((s: any) => s.queueDesign);
   const [formData, setFormData] = useState({
     name: '',
     imageUrl: '',
     complexityLevel: 3,
-    silkRequired: 5.0,
-    zariRequired: 1.5,
     setupDays: 2,
     expectedWeavingDays: 6,
     expectedSellingPrice: 15000,
     category: 'Wedding',
+    tags: 'Export, Traditional',
     notes: ''
   });
 
@@ -24,20 +23,20 @@ export function AddDesignModal({ isOpen, onClose }: { isOpen: boolean; onClose: 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name) return;
+    if (!formData.name || !formData.imageUrl) return;
 
-    addManualDesign({
+    queueDesign({
       id: `design-${Date.now().toString().slice(-4)}`,
       name: formData.name,
-      imageUrl: formData.imageUrl || 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80',
+      imageUrl: formData.imageUrl,
       complexityLevel: Number(formData.complexityLevel),
-      silkRequired: Number(formData.silkRequired),
-      zariRequired: Number(formData.zariRequired),
       setupDays: Number(formData.setupDays),
       expectedWeavingDays: Number(formData.expectedWeavingDays),
       expectedSellingPrice: Number(formData.expectedSellingPrice),
       category: formData.category,
-      notes: formData.notes
+      tags: formData.tags.split(',').map(t => t.trim()),
+      notes: formData.notes,
+      status: 'Queued'
     });
 
     onClose();
@@ -55,15 +54,41 @@ export function AddDesignModal({ isOpen, onClose }: { isOpen: boolean; onClose: 
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Design Name</label>
+            <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Design Name *</label>
             <input 
               type="text" 
               required
               placeholder="e.g. Kanjivaram Peacock Regal" 
               value={formData.name}
               onChange={e => setFormData({ ...formData, name: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-hidden focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
             />
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Image URL / Artwork Upload *</label>
+            <input 
+              type="url" 
+              required
+              placeholder="https://images.unsplash.com/..." 
+              value={formData.imageUrl}
+              onChange={e => setFormData({ ...formData, imageUrl: e.target.value })}
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 mb-1"
+            />
+            <div className="flex gap-2 mt-1.5">
+               {['https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80',
+                 'https://images.unsplash.com/photo-1583391733956-6c78276477e2?auto=format&fit=crop&w=600&q=80',
+                 'https://images.unsplash.com/photo-1609357605129-26f69add5d6e?auto=format&fit=crop&w=600&q=80'].map((url, i) => (
+                  <button 
+                    key={i} 
+                    type="button" 
+                    onClick={() => setFormData({ ...formData, imageUrl: url })}
+                    className="text-[10px] bg-slate-100 hover:bg-indigo-50 hover:text-indigo-600 px-2 py-1 rounded border border-slate-200"
+                  >
+                     Sample Artwork {i + 1}
+                  </button>
+               ))}
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -89,20 +114,20 @@ export function AddDesignModal({ isOpen, onClose }: { isOpen: boolean; onClose: 
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Silk Req (kg)</label>
+              <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Category</label>
               <input 
-                type="number" step="0.1"
-                value={formData.silkRequired}
-                onChange={e => setFormData({ ...formData, silkRequired: Number(e.target.value) })}
+                type="text"
+                value={formData.category}
+                onChange={e => setFormData({ ...formData, category: e.target.value })}
                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Zari Req (spools)</label>
+              <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Tags (Comma separated)</label>
               <input 
-                type="number" step="0.1"
-                value={formData.zariRequired}
-                onChange={e => setFormData({ ...formData, zariRequired: Number(e.target.value) })}
+                type="text" 
+                value={formData.tags}
+                onChange={e => setFormData({ ...formData, tags: e.target.value })}
                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
               />
             </div>
@@ -255,35 +280,42 @@ export function NewMaterialModal({ isOpen, onClose }: { isOpen: boolean; onClose
   );
 }
 
-// --- 3. CREATE WARP MODAL ---
-export function CreateWarpModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+// --- 3. CREATE WARP MODAL (Prepare Warp Flow) ---
+export function CreateWarpModal({ isOpen, onClose, selectedDesignId }: { isOpen: boolean; onClose: () => void; selectedDesignId?: string }) {
   const createWarp = useCoopStore((s: any) => s.createWarp);
+  const createProductionJob = useCoopStore((s: any) => s.createProductionJob);
   const designs = useCoopStore((s: any) => s.productionReadyDesigns) || [];
-  const looms = useCoopStore((s: any) => s.looms) || [];
+  
+  const initialDesign = selectedDesignId || (designs[0]?.id || '');
 
   const [formData, setFormData] = useState({
-    silkType: 'Raw Silk Grade A',
-    warpLength: 72,
-    estimatedSarees: 12,
-    assignedDesignId: '',
-    assignedLoomId: ''
+    batchSize: 12,
+    productionModel: 'KHDC_GOVT',
+    assignedDesignId: initialDesign
   });
+
+  const selectedDesign = designs.find((d: any) => d.id === formData.assignedDesignId);
+  const silkNeeded = selectedDesign ? (formData.batchSize * selectedDesign.complexityLevel * 0.1).toFixed(1) : 0;
+  const zariNeeded = selectedDesign ? (formData.batchSize * selectedDesign.complexityLevel * 0.05).toFixed(1) : 0;
 
   if (!isOpen) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.assignedDesignId) return;
+
+    const warpId = `WARP-${Math.floor(100 + Math.random() * 900)}`;
 
     createWarp({
-      id: `WARP-${Math.floor(100 + Math.random() * 900)}`,
-      silkType: formData.silkType,
-      warpLength: Number(formData.warpLength),
-      estimatedSarees: Number(formData.estimatedSarees),
-      assignedDesignId: formData.assignedDesignId || null,
-      assignedLoomId: formData.assignedLoomId || null,
-      status: 'Prepared',
-      createdAt: new Date().toISOString()
+      id: warpId,
+      designId: formData.assignedDesignId,
+      targetSarees: Number(formData.batchSize),
+      silkAllocated: Number(silkNeeded),
+      zariAllocated: Number(zariNeeded),
+      status: 'PREPARING'
     });
+
+    createProductionJob(formData.assignedDesignId, warpId, formData.productionModel);
 
     onClose();
   };
@@ -293,75 +325,67 @@ export function CreateWarpModal({ isOpen, onClose }: { isOpen: boolean; onClose:
       <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl animate-scale-up">
         <div className="flex justify-between items-center mb-5 border-b border-slate-100 pb-3">
           <h3 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-            <Layers className="text-indigo-600" size={20} /> Create New Warp
+            <Layers className="text-indigo-600" size={20} /> Prepare Warp
           </h3>
           <button onClick={onClose} className="p-1 text-slate-400 hover:text-slate-600 rounded-lg"><X size={18} /></button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          
           <div>
-            <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Silk Material Type</label>
-            <input 
-              type="text" 
-              required
-              value={formData.silkType}
-              onChange={e => setFormData({ ...formData, silkType: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Warp Length (m)</label>
-              <input 
-                type="number" 
-                value={formData.warpLength}
-                onChange={e => setFormData({ ...formData, warpLength: Number(e.target.value) })}
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Est. Sarees</label>
-              <input 
-                type="number" 
-                value={formData.estimatedSarees}
-                onChange={e => setFormData({ ...formData, estimatedSarees: Number(e.target.value) })}
-                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Assigned Design (Optional)</label>
+            <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Target Design</label>
             <select 
               value={formData.assignedDesignId}
               onChange={e => setFormData({ ...formData, assignedDesignId: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm bg-slate-50"
             >
-              <option value="">Unassigned</option>
               {designs.map((d: any) => (
-                <option key={d.id} value={d.id}>{d.name} ({d.id})</option>
+                <option key={d.id} value={d.id}>{d.name} (Complexity: {d.complexityLevel})</option>
               ))}
             </select>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Assigned Loom (Optional)</label>
-            <select 
-              value={formData.assignedLoomId}
-              onChange={e => setFormData({ ...formData, assignedLoomId: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-            >
-              <option value="">Unassigned</option>
-              {looms.map((l: any) => (
-                <option key={l.id} value={l.id}>{l.id.toUpperCase()} - {l.weaverName}</option>
-              ))}
-            </select>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Batch Size</label>
+              <input 
+                type="number" 
+                value={formData.batchSize}
+                onChange={e => setFormData({ ...formData, batchSize: Number(e.target.value) })}
+                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-stone-500 uppercase tracking-wider mb-1">Production Model</label>
+              <select 
+                value={formData.productionModel}
+                onChange={e => setFormData({ ...formData, productionModel: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+              >
+                <option value="KHDC_GOVT">KHDC Govt (Wage)</option>
+                <option value="PRIVATE">Private Commercial</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4">
+             <h4 className="text-xs font-bold text-indigo-800 uppercase tracking-widest mb-2">Auto-Calculated Materials</h4>
+             <div className="grid grid-cols-2 gap-2 text-sm">
+                <div className="flex justify-between">
+                   <span className="text-indigo-600">Silk Needed:</span>
+                   <span className="font-semibold text-indigo-900">{silkNeeded} kg</span>
+                </div>
+                <div className="flex justify-between">
+                   <span className="text-indigo-600">Zari Needed:</span>
+                   <span className="font-semibold text-indigo-900">{zariNeeded} spools</span>
+                </div>
+             </div>
+             <p className="text-[10px] text-indigo-500 mt-2">Materials will be strictly deducted from Available Inventory and reserved for this Warp.</p>
           </div>
 
           <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
             <button type="button" onClick={onClose} className="px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-lg">Cancel</button>
-            <button type="submit" className="px-5 py-2 text-sm font-semibold bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Create Warp</button>
+            <button type="submit" className="px-5 py-2 text-sm font-semibold bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 shadow-md">Confirm & Allocate</button>
           </div>
         </form>
       </div>

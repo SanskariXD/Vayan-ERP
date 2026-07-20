@@ -3,7 +3,7 @@
 // Core TypeScript Type Definitions
 // ============================================================
 
-export type LoomStatus = 'IDLE' | 'WARP_SETUP' | 'SETUP_JACQUARD' | 'SETUP_SILK_PREP' | 'SETUP_WARP_DRAW' | 'SETUP_CALIBRATION' | 'WEAVING' | 'MAINTENANCE' | 'STOPPED' | 'WAITING_FOR_MATERIALS';
+export type LoomStatus = 'IDLE' | 'WARP_SETUP' | 'SETUP_JACQUARD' | 'SETUP_SILK_PREP' | 'SETUP_WARP_DRAW' | 'SETUP_CALIBRATION' | 'WEAVING' | 'QC' | 'MAINTENANCE' | 'STOPPED' | 'WAITING_FOR_MATERIALS';
 export type DesignComplexity = 1 | 2 | 3 | 4 | 5;
 export type UserRole = 'COOPERATIVE' | 'SOLO_ARTISAN';
 
@@ -18,8 +18,6 @@ export interface SareeDesign {
   daysPerSaree: number;
   setupDays: number;
   expectedWeavingDays: number;
-  silkRequired: number; // kg
-  zariRequired: number; // spools
   setupCost: number; // Penalty/Cost for switching warp
   requiresNewCards: boolean;
   expectedSellingPrice: number;
@@ -27,6 +25,8 @@ export interface SareeDesign {
   region: string;
   category: string;
   globalTrendMatch?: string | null;
+  tags: string[];
+  adaptationDetails?: { originalImage: string, changes: string[] };
 }
 
 export interface Loom {
@@ -103,7 +103,8 @@ export interface ProductionJob {
   expectedDeliveryDate: string;
   notes: string;
   status: 'Waiting' | 'Ready' | 'Scheduled' | 'Assigned' | 'Completed';
-  productionModel?: 'KHDC_GOVT' | 'PRIVATE_COMMERCIAL';
+  warpId: string;
+  productionModel: 'KHDC_GOVT' | 'PRIVATE';
   
   // Estimates
   setupDays: number;
@@ -180,13 +181,11 @@ export interface DesignQueueItem extends SareeDesign {
 
 export interface Warp {
   id: string;
-  silkType: string;
-  warpLength: number; // in meters
-  estimatedSarees: number;
-  assignedDesignId: string | null;
-  assignedLoomId: string | null;
-  status: 'Prepared' | 'Assigned' | 'Installed' | 'Completed';
-  createdAt: string;
+  designId: string;
+  targetSarees: number;
+  silkAllocated: number;
+  zariAllocated: number;
+  status: 'PREPARING' | 'READY' | 'EXHAUSTED';
 }
 
 export interface MaterialInventoryItem {

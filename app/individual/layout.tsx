@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Home, Compass, BookOpen, ChevronLeft, Package, Briefcase, Wallet, Bell, LayoutDashboard, TrendingUp } from 'lucide-react';
 import { useSimulationStore } from '@/lib/store';
 
@@ -16,13 +16,38 @@ const TABS = [
 export default function IndividualLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [showNotifications, setShowNotifications] = useState(false);
+  const [isOnline, setIsOnline] = useState(true);
   const { state, isLoaded } = useSimulationStore();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+       setIsOnline(navigator.onLine);
+       const handleOnline = () => setIsOnline(true);
+       const handleOffline = () => setIsOnline(false);
+
+       window.addEventListener('online', handleOnline);
+       window.addEventListener('offline', handleOffline);
+
+       return () => {
+          window.removeEventListener('online', handleOnline);
+          window.removeEventListener('offline', handleOffline);
+       };
+    }
+  }, []);
 
   // Weaver-01 is our hardcoded user for the solo portal demo
   const notifications = isLoaded && state ? state.eventLog.filter((e: any) => e.title.includes('loom-01') || e.description.includes('weaver-01')).slice(0, 5) : [];
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#F9F6F0', display: 'flex', flexDirection: 'column', maxWidth: '560px', margin: '0 auto', position: 'relative' }}>
+      {/* Offline Banner */}
+      {!isOnline && (
+         <div className="bg-amber-600 text-white text-[11px] font-bold px-4 py-2.5 text-center sticky top-0 z-50 shadow-md flex items-center justify-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-amber-200 animate-ping"></span>
+            Offline Mode. Progress saved locally. Will sync to Cooperative when connected.
+         </div>
+      )}
+
       {/* Top Bar */}
       <div
         style={{

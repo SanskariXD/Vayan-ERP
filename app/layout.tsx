@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { OfflineBanner } from "@/components/OfflineBanner";
+import { ToastContainer } from "@/components/ToastContainer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -19,7 +21,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{ fontFamily: "Inter, system-ui, sans-serif" }}>
+        <OfflineBanner />
         {children}
+        <ToastContainer />
       </body>
     </html>
   );

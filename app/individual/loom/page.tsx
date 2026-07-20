@@ -63,8 +63,18 @@ export default function IndividualLoomPage() {
   };
 
   const handleRequestMaterial = () => {
-     handleAction('Silk & Zari allocation request submitted', () => {
-        triggerManualEvent('INVENTORY', 'Material Request', `Weaver requested raw silk and zari allocation for ${currentLoom.id}.`, 'Request sent');
+     handleAction('Purchase inquiry sent to supplier & draft recorded in ledger', () => {
+        triggerManualEvent('INVENTORY', 'Material Purchase Inquiry', `Artisan generated purchase inquiry for silk & zari on ${currentLoom.id}.`, 'Recorded in ledger');
+        if (state.transactions) {
+           state.transactions.unshift({
+              id: `txn-pi-${Date.now()}`,
+              date: state.cooperative?.currentSimulatedDate || '2026-07-20',
+              description: `Material Purchase Inquiry: Mulberry Silk & Zari Spools (${currentLoom.id})`,
+              amount: 8500,
+              type: 'Expense',
+              category: 'Material Purchase'
+           });
+        }
      });
   };
 
@@ -148,9 +158,9 @@ export default function IndividualLoomPage() {
             <button 
                onClick={handleRequestMaterial}
                disabled={isSubmitting}
-               className="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1"
+               className="text-xs font-bold text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg border border-indigo-200 flex items-center gap-1 transition"
             >
-               <Layers size={14} /> Request Restock
+               <Layers size={14} /> Purchase Inquiry
             </button>
          </div>
          <div className="p-5 grid grid-cols-2 gap-4">
@@ -184,36 +194,35 @@ export default function IndividualLoomPage() {
          </div>
       </div>
 
-      {/* Select / Add Design for Next Warp */}
+      {/* Read-only Next Assigned Batch */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden animate-slide-up-delay-2">
-         <div className="px-5 py-4 border-b border-slate-100">
-            <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wide">Assign / Change Design</h2>
+         <div className="px-5 py-4 border-b border-slate-100 flex justify-between items-center">
+            <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wide">Next Assigned Batch</h2>
+            <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">Society Allocated</span>
          </div>
-         <div className="p-5 space-y-3">
-            <div className="text-xs text-stone-500 mb-1">
-               Select a design to prepare for your loom's next warp setup:
-            </div>
-            <div className="flex gap-2">
-               <select 
-                  value={selectedDesignId}
-                  onChange={(e) => setSelectedDesignId(e.target.value)}
-                  className="flex-1 text-xs border border-slate-300 rounded-lg p-2.5 bg-white text-slate-800 font-semibold focus:outline-none focus:border-indigo-500"
-               >
-                  <option value="">-- Choose Design --</option>
-                  {state.designs.map((d: any) => (
-                     <option key={d.id} value={d.id}>
-                        {d.name} ({d.expectedSellingPrice ? `₹${d.expectedSellingPrice.toLocaleString('en-IN')}` : ''})
-                     </option>
-                  ))}
-               </select>
-               <button 
-                  onClick={handleAssignDesign}
-                  disabled={!selectedDesignId || isSubmitting}
-                  className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-50 text-white text-xs font-bold rounded-lg transition"
-               >
-                  Assign
-               </button>
-            </div>
+         <div className="p-5">
+            {(() => {
+               const nextJob = (state.pendingExecutions || []).find((j: any) => j.status === 'QUEUED' || j.status === 'Assigned');
+               const nextDesign = nextJob ? state.designs.find((d: any) => d.id === nextJob.designId) : null;
+               
+               if (nextDesign) {
+                  return (
+                     <div className="flex items-center gap-4 bg-slate-50 p-3.5 rounded-xl border border-slate-100">
+                        <img src={nextDesign.imageUrl} alt={nextDesign.name} className="w-14 h-14 object-cover rounded-lg border border-slate-200 shrink-0" />
+                        <div>
+                           <div className="text-xs font-bold text-slate-800">{nextDesign.name}</div>
+                           <div className="text-[11px] text-stone-500 font-medium">Batch Size: 12 Sarees • Setup: {nextDesign.setupDays || 15} days</div>
+                           <div className="text-[10px] font-bold text-indigo-600 mt-1">Status: Queue Position #1</div>
+                        </div>
+                     </div>
+                  );
+               }
+               return (
+                  <div className="text-xs text-stone-400 italic text-center py-2">
+                     No upcoming batch queued by Society Manager yet.
+                  </div>
+               );
+            })()}
          </div>
       </div>
 
@@ -222,30 +231,47 @@ export default function IndividualLoomPage() {
          <h2 className="text-xs font-bold text-stone-500 uppercase tracking-widest px-1">Loom Controls</h2>
          
          <div className="grid grid-cols-2 gap-3">
-            <button 
-               onClick={handleCompleteWork}
-               disabled={isSubmitting || currentLoom.sareesCompleted >= currentLoom.targetSarees}
-               className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white p-3.5 rounded-xl shadow-sm flex items-center justify-center gap-2 transition text-xs font-bold"
-            >
-               <Check size={18} /> Update Progress (+1)
-            </button>
-
-            {currentLoom.status === 'WEAVING' ? (
+            {currentLoom.sareesCompleted >= (currentLoom.targetSarees || 12) ? (
                <button 
-                  onClick={handlePause}
-                  disabled={isSubmitting}
-                  className="bg-amber-100 hover:bg-amber-200 text-amber-800 p-3.5 rounded-xl flex items-center justify-center gap-2 transition text-xs font-bold border border-amber-200"
+                  onClick={() => {
+                     handleAction('Batch submitted for Quality Control Inspection!', () => {
+                        updateLoomState(currentLoom.id, { status: 'QC' });
+                        triggerManualEvent('QUALITY', 'Batch Submitted for QC', `Weaver submitted completed batch on ${currentLoom.id} for QC inspection.`, 'Quality gate active');
+                     });
+                  }}
+                  disabled={isSubmitting || currentLoom.status === 'QC'}
+                  className="col-span-2 bg-indigo-600 hover:bg-indigo-700 text-white p-3.5 rounded-xl shadow-md flex items-center justify-center gap-2 transition text-xs font-bold"
                >
-                  <Pause size={18} /> Pause Loom
+                  <CheckCircle2 size={18} /> Submit Batch for QC Inspection
                </button>
             ) : (
                <button 
-                  onClick={handleResume}
-                  disabled={isSubmitting}
-                  className="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 p-3.5 rounded-xl flex items-center justify-center gap-2 transition text-xs font-bold border border-emerald-200"
+                  onClick={handleCompleteWork}
+                  disabled={isSubmitting || currentLoom.status === 'QC'}
+                  className="bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white p-3.5 rounded-xl shadow-sm flex items-center justify-center gap-2 transition text-xs font-bold"
                >
-                  <Play size={18} /> Resume Loom
+                  <Check size={18} /> Update Progress (+1)
                </button>
+            )}
+
+            {currentLoom.sareesCompleted < (currentLoom.targetSarees || 12) && (
+               currentLoom.status === 'WEAVING' ? (
+                  <button 
+                     onClick={handlePause}
+                     disabled={isSubmitting || currentLoom.status === 'QC'}
+                     className="bg-amber-100 hover:bg-amber-200 text-amber-800 p-3.5 rounded-xl flex items-center justify-center gap-2 transition text-xs font-bold border border-amber-200"
+                  >
+                     <Pause size={18} /> Pause Loom
+                  </button>
+               ) : (
+                  <button 
+                     onClick={handleResume}
+                     disabled={isSubmitting || currentLoom.status === 'QC'}
+                     className="bg-emerald-100 hover:bg-emerald-200 text-emerald-800 p-3.5 rounded-xl flex items-center justify-center gap-2 transition text-xs font-bold border border-emerald-200"
+                  >
+                     <Play size={18} /> Resume Loom
+                  </button>
+               )
             )}
 
             <button 

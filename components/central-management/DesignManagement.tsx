@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useCoopStore } from '@/lib/store';
 import { Printer, Check, Plus, Edit2, Trash2, ChevronRight, X } from 'lucide-react';
-import { AddDesignModal } from './Modals';
+import { AddDesignModal, CreateWarpModal } from './Modals';
 
 export default function DesignManagementTab() {
   const designQueue = useCoopStore((s: any) => s.designQueue);
@@ -13,12 +13,33 @@ export default function DesignManagementTab() {
   const [activeSection, setActiveSection] = useState<'queue' | 'ready'>('queue');
   const [printingDesignId, setPrintingDesignId] = useState<string | null>(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isWarpModalOpen, setIsWarpModalOpen] = useState(false);
+  const [selectedDesignForWarp, setSelectedDesignForWarp] = useState<string | undefined>(undefined);
 
-  const handlePrint = (designId: string) => {
-    setPrintingDesignId(designId);
+  const handleExportJacquard = (design: any) => {
+    setPrintingDesignId(design.id);
+    // Lightweight client-side print scoped to design
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head><title>Jacquard Export - ${design.name}</title></head>
+          <body style="font-family: sans-serif; padding: 20px;">
+            <h1>${design.name} (${design.id})</h1>
+            <p>Category: ${design.category || 'N/A'}</p>
+            <p>Complexity: ${design.complexityLevel || design.complexity || 3}</p>
+            <img src="${design.imageUrl}" style="max-width: 100%; height: auto; border: 1px solid #ccc;" />
+            <script>
+               window.onload = () => { window.print(); window.close(); }
+            </script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
     setTimeout(() => {
       setPrintingDesignId(null);
-    }, 2000);
+    }, 1000);
   };
 
   const handleMarkReady = (designId: string) => {
@@ -84,12 +105,14 @@ export default function DesignManagementTab() {
                     <div className="text-sm font-semibold text-slate-700">{design.complexityLevel || design.complexity || 3}/5</div>
                   </div>
                   <div>
-                    <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Silk Req.</div>
-                    <div className="text-sm font-semibold text-slate-700">{design.silkRequired} kg</div>
+                    <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Category</div>
+                    <div className="text-sm font-semibold text-slate-700">{design.category || 'N/A'}</div>
                   </div>
                   <div>
-                    <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Zari Req.</div>
-                    <div className="text-sm font-semibold text-slate-700">{design.zariRequired} spools</div>
+                    <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-0.5">Tags</div>
+                    <div className="text-sm font-semibold text-slate-700 truncate" title={design.tags?.join(', ')}>
+                       {design.tags?.length ? design.tags.join(', ') : 'None'}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -97,11 +120,11 @@ export default function DesignManagementTab() {
               {activeSection === 'queue' ? (
                 <div className="flex gap-2 pt-4 border-t border-slate-100">
                   <button 
-                    onClick={() => handlePrint(design.id)}
+                    onClick={() => handleExportJacquard(design)}
                     className="flex-1 flex justify-center items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 rounded-lg text-xs font-semibold transition"
                   >
                     {printingDesignId === design.id ? <Check size={14} className="text-emerald-600"/> : <Printer size={14} />} 
-                    {printingDesignId === design.id ? 'Sent to Printer' : 'Print Card'}
+                    {printingDesignId === design.id ? 'Exporting...' : 'Export Jacquard PDF'}
                   </button>
                   <button 
                     onClick={() => handleMarkReady(design.id)}
@@ -111,10 +134,14 @@ export default function DesignManagementTab() {
                   </button>
                 </div>
               ) : (
-                <div className="pt-4 border-t border-slate-100 flex justify-end">
-                   <button className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1">
-                      Edit Details <ChevronRight size={14} />
-                   </button>
+                <div className="flex gap-2 pt-4 border-t border-slate-100">
+                  <button 
+                    onClick={() => handleExportJacquard(design)}
+                    className="flex-1 flex justify-center items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 rounded-lg text-xs font-semibold transition"
+                  >
+                    {printingDesignId === design.id ? <Check size={14} className="text-emerald-600"/> : <Printer size={14} />} 
+                    {printingDesignId === design.id ? 'Exporting...' : 'Export Jacquard PDF'}
+                  </button>
                 </div>
               )}
             </div>
@@ -132,6 +159,7 @@ export default function DesignManagementTab() {
       </div>
 
       <AddDesignModal isOpen={isAddModalOpen} onClose={() => setIsAddModalOpen(false)} />
+      <CreateWarpModal isOpen={isWarpModalOpen} onClose={() => setIsWarpModalOpen(false)} selectedDesignId={selectedDesignForWarp} />
     </div>
   );
 }

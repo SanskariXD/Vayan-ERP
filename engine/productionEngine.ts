@@ -52,7 +52,7 @@ export function runProductionEngine(looms: Loom[]) {
         completedSareesToday.push({ loomId: loom.id, designId: loom.currentDesignId });
         
         if (loom.sareesCompleted >= loom.targetSarees) {
-          loom.status = 'IDLE';
+          loom.status = 'QC';
           // We keep currentDesignId so the UI knows what was last woven
         }
       }

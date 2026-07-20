@@ -31,7 +31,7 @@ function getDayLabels(currentDateStr: string) {
 }
 
 export default function SchedulingPage() {
-  const { state, isLoaded, initialize, deployLoom } = useSimulationStore();
+  const { state, isLoaded, initialize, assignLoomToJob, addToast } = useSimulationStore();
   const [isAnalyzing, setIsAnalyzing] = useState(true);
 
   useEffect(() => {
@@ -46,19 +46,24 @@ export default function SchedulingPage() {
 
   if (!isLoaded || !state) return null;
 
-  const { looms, cooperative, productionReadyDesigns } = state;
+  const { looms, cooperative, pendingExecutions, designs } = state;
   const days = getDayLabels(cooperative.currentSimulatedDate);
-  const schedulableDesigns = productionReadyDesigns || [];
+  const schedulableJobs = (pendingExecutions || []).filter((p: any) => p.status === 'QUEUED');
 
-  // Extract recommendations from the Recommendation Engine (ONLY from Production Ready Designs)
-  const recommendations = (schedulableDesigns.length === 0) ? [] : looms
+  // Extract recommendations from the Recommendation Engine (ONLY from Allocated Pending Executions)
+  const recommendations = (schedulableJobs.length === 0) ? [] : looms
     .filter((l: any) => l.status === 'IDLE' || (l.status === 'WEAVING' && ((l.targetSarees - l.sareesCompleted) * l.averageSareeDays) <= 6))
     .map((l: any) => {
        const isIdle = l.status === 'IDLE';
-       const targetDesign = schedulableDesigns.find((d: any) => d.expectedDemandScore > 70) || schedulableDesigns[0];
+       // Find best unassigned job
+       const targetJob = schedulableJobs[0];
+       if (!targetJob) return null;
+       const targetDesign = (designs || []).find((d: any) => d.id === targetJob.designId);
        if (!targetDesign) return null;
+
        return {
          id: `rec-${l.id}`,
+         jobId: targetJob.id,
          designId: targetDesign.id,
          designName: targetDesign.name,
          targetLoom: l.id,
@@ -67,7 +72,7 @@ export default function SchedulingPage() {
          labourRequirement: '1 Weaver',
          riskLevel: isIdle ? 'HIGH' : 'LOW',
          confidenceScore: targetDesign.expectedDemandScore || 85,
-         reasoning: isIdle ? 'Loom is currently idle causing revenue bleed.' : 'Loom is nearing completion. Prepare warp to avoid downtime.'
+         reasoning: isIdle ? 'Loom is currently idle causing revenue bleed.' : 'Loom is nearing completion. Schedule next warp to avoid downtime.'
        };
     })
     .filter(Boolean)
@@ -75,7 +80,8 @@ export default function SchedulingPage() {
     .slice(0, 2); // Show only top 2 highest priority
 
   const handleApprove = (rec: any) => {
-    deployLoom(rec.targetLoom, rec.designId);
+    assignLoomToJob(rec.jobId, rec.targetLoom);
+    if (addToast) addToast(`Assigned ${rec.designName} to ${rec.targetLoom.toUpperCase()}`, 'success');
   };
 
   return (
@@ -104,8 +110,8 @@ export default function SchedulingPage() {
         
         {recommendations.length === 0 ? (
            <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm text-center text-stone-500 text-sm">
-             {schedulableDesigns.length === 0 
-               ? "No production-ready designs available. Prepare Jacquard cards and click 'Mark Ready' in Centralized Management."
+             {schedulableJobs.length === 0 
+               ? "No allocated warps available. Allocate warps in Centralized Management -> Warp Management tab."
                : "No pending actions required. Operations are optimal."}
            </div>
         ) : (
@@ -205,21 +211,85 @@ export default function SchedulingPage() {
                          ))}
                       </div>
 
-                      {loom.currentDesignId && (
-                         <div
-                           className="absolute top-1/2 -translate-y-1/2 h-10 rounded-md shadow-sm border overflow-hidden cursor-pointer flex items-center custom-tooltip-parent"
-                           style={{
-                             left: 1, // Simulating current day start
-                             width: loom.status === 'WARP_SETUP' ? Math.max(loom.setupDaysRemaining * DAY_WIDTH, 4) : Math.max((loom.targetSarees - loom.sareesCompleted) * loom.averageSareeDays * DAY_WIDTH, 4),
-                             backgroundColor: loom.status === 'WEAVING' ? '#E0F2FE' : '#FFEDD5',
-                             borderColor: loom.status === 'WEAVING' ? '#7DD3FC' : '#FDBA74',
-                           }}
-                         >
-                           <div className="mx-2 truncate w-full overflow-hidden whitespace-nowrap text-ellipsis text-xs font-semibold" style={{ color: loom.status === 'WEAVING' ? '#0369A1' : '#9A3412' }}>
-                             {state.designs.find((d:any) => d.id === loom.currentDesignId)?.name || 'Design'}
-                           </div>
-                         </div>
-                      )}
+                       {loom.currentDesignId && (() => {
+                          const isSetup = loom.status === 'WARP_SETUP' || loom.status.startsWith('SETUP_');
+                          const setupWidth = (loom.setupDaysRemaining || (isSetup ? 15 : 0)) * DAY_WIDTH;
+                          const weavingDaysLeft = Math.max(1, (loom.targetSarees - loom.sareesCompleted) * (loom.averageSareeDays || 5));
+                          const weavingWidth = weavingDaysLeft * DAY_WIDTH;
+                          const totalWidth = isSetup ? setupWidth + weavingWidth : weavingWidth;
+                          const designObj = (designs || []).find((d: any) => d.id === loom.currentDesignId);
+
+                          return (
+                             <div
+                               className="absolute top-1/2 -translate-y-1/2 h-10 rounded-md shadow-sm border overflow-hidden cursor-pointer flex items-center transition-all"
+                               style={{
+                                 left: 1,
+                                 width: Math.max(totalWidth, 60),
+                                 backgroundColor: isSetup ? '#FFEDD5' : '#E0F2FE',
+                                 borderColor: isSetup ? '#FDBA74' : '#7DD3FC',
+                               }}
+                               title={`${designObj?.name || 'Design'} (${isSetup ? `Setup: ${loom.setupDaysRemaining || 15}d left` : `Weaving: ${loom.sareesCompleted}/${loom.targetSarees} completed`})`}
+                             >
+                               {isSetup && setupWidth > 0 && (
+                                  <div 
+                                     className="h-full bg-amber-200/80 border-r border-amber-300 flex items-center px-2 shrink-0" 
+                                     style={{ width: Math.min(setupWidth, totalWidth) }}
+                                  >
+                                     <span className="text-[10px] font-bold text-amber-900 truncate">
+                                        Setup ({loom.setupDaysRemaining || 15}d)
+                                     </span>
+                                  </div>
+                               )}
+                               <div className="mx-2 truncate w-full overflow-hidden whitespace-nowrap text-xs font-semibold text-slate-800">
+                                 {designObj?.name || 'Handloom Design'} ({isSetup ? `Weaving +${weavingDaysLeft}d` : `${loom.sareesCompleted}/${loom.targetSarees} sarees`})
+                               </div>
+                             </div>
+                          );
+                       })()}
+
+                       {/* Render assigned jobs that are queued for this loom */}
+                       {(() => {
+                           const assignedJobs = (pendingExecutions || []).filter((j: any) => j.status === 'Assigned' && j.targetLoom === loom.id);
+                           let offsetWidth = loom.currentDesignId ? ((loom.setupDaysRemaining || 0) + Math.max(1, (loom.targetSarees - loom.sareesCompleted) * (loom.averageSareeDays || 5))) * DAY_WIDTH : 0;
+                           
+                           return assignedJobs.map((job: any, index: number) => {
+                               const designObj = (designs || []).find((d: any) => d.id === job.designId);
+                               const setupWidth = (designObj?.setupDays || 15) * DAY_WIDTH;
+                               const weavingWidth = (job.quantity || 12) * (designObj?.expectedWeavingDays || 5) * DAY_WIDTH;
+                               const totalWidth = setupWidth + weavingWidth;
+                               const leftPos = Math.max(1, offsetWidth + 1);
+                               
+                               // Accumulate offset for next job
+                               offsetWidth += totalWidth;
+                               
+                               return (
+                                  <div
+                                    key={job.id}
+                                    className="absolute top-1/2 -translate-y-1/2 h-10 rounded-md shadow-sm border overflow-hidden cursor-pointer flex items-center transition-all opacity-80"
+                                    style={{
+                                      left: leftPos,
+                                      width: Math.max(totalWidth, 60),
+                                      backgroundColor: '#F1F5F9', // Slate 100 for queued
+                                      borderColor: '#CBD5E1', // Slate 300
+                                      borderStyle: 'dashed'
+                                    }}
+                                    title={`Queued: ${designObj?.name || 'Handloom Design'} (Setup: ${designObj?.setupDays || 15}d, Weaving: ${job.quantity || 12} sarees)`}
+                                  >
+                                    <div 
+                                       className="h-full bg-slate-200 border-r border-slate-300 flex items-center px-2 shrink-0" 
+                                       style={{ width: Math.min(setupWidth, totalWidth) }}
+                                    >
+                                       <span className="text-[10px] font-bold text-slate-600 truncate">
+                                          Setup ({designObj?.setupDays || 15}d)
+                                       </span>
+                                    </div>
+                                    <div className="mx-2 truncate w-full overflow-hidden whitespace-nowrap text-xs font-semibold text-slate-600">
+                                      {designObj?.name || 'Queued Job'} ({job.quantity || 12} sarees)
+                                    </div>
+                                  </div>
+                               );
+                           });
+                       })()}
                     </div>
                  </div>
                );

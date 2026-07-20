@@ -104,7 +104,10 @@ export default function CustomOrdersPage() {
                    </td>
                    <td className="px-6 py-3 text-xs font-medium text-slate-800">{order.quantity} Sarees</td>
                    <td className="px-6 py-3">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${order.status === 'Pending' ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700'}`}>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded uppercase ${
+                         order.status === 'Completed' ? 'bg-emerald-100 text-emerald-700' : 
+                         order.status === 'Pending' ? 'bg-amber-100 text-amber-700' : 'bg-indigo-100 text-indigo-700'
+                      }`}>
                          {order.status}
                       </span>
                    </td>

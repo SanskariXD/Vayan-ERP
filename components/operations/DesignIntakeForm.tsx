@@ -41,11 +41,10 @@ export function DesignIntakeForm({ onClose }: DesignIntakeFormProps) {
       // New required properties
       setupDays: 5,
       expectedWeavingDays: Math.max(3, formData.complexityLevel),
-      silkRequired: 0.5,
-      zariRequired: 0.2,
       setupCost: 10000,
       expectedSellingPrice: 15000,
-      category: 'Custom Entry'
+      category: 'Custom Entry',
+      tags: []
     };
 
     addDesign(newDesign);

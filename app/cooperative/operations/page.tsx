@@ -9,6 +9,7 @@ export default function LoomManagementPage() {
   const { state, isLoaded, addProductionJob, assignLoomToJob, updateLoomState, triggerManualEvent } = useSimulationStore();
   const [isDesignIntakeOpen, setIsDesignIntakeOpen] = useState(false);
   const [editingLoom, setEditingLoom] = useState<string | null>(null);
+  const [qcLoomId, setQcLoomId] = useState<string | null>(null);
 
   if (!isLoaded || !state) return null;
 
@@ -49,6 +50,38 @@ export default function LoomManagementPage() {
       </div>
 
       <div className="animate-slide-up-delay-1">
+          {/* Cluster Overview Component */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm hover:shadow-md transition">
+              <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Total Looms</div>
+              <div className="text-2xl font-bold text-slate-800">16</div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm hover:shadow-md transition">
+              <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Dye Units</div>
+              <div className="text-2xl font-bold text-slate-800">3</div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm hover:shadow-md transition">
+              <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Warping Teams</div>
+              <div className="text-2xl font-bold text-slate-800">2</div>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm hover:shadow-md transition">
+              <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Card Printers</div>
+              <div className="text-2xl font-bold text-slate-800">1</div>
+            </div>
+          </div>
+
+          {/* Sustainability Component */}
+          <div className="bg-[#E6F4EA] rounded-xl border border-[#CEEAD6] p-4 mb-8 flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <div className="text-sm font-bold text-[#137333] mb-1">Sustainability & Efficiency</div>
+              <div className="text-xs font-semibold text-[#188038]">
+                Material Utilization: 96% <span className="mx-2 opacity-50">|</span> Waste Prevented: 12.4 kg
+              </div>
+            </div>
+            <div className="w-10 h-10 bg-[#CEEAD6] rounded-full flex items-center justify-center text-[#137333] shadow-sm">
+              <span className="text-lg">🌱</span>
+            </div>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
              {looms.map((loom: any) => (
@@ -113,51 +146,125 @@ export default function LoomManagementPage() {
                    </div>
 
                    {/* Manual Controls */}
-                   <div className="border-t border-slate-100 pt-4 mt-auto">
-                      <div className="text-[10px] font-bold text-stone-400 uppercase mb-3">Manual Override Console</div>
-                      <div className="grid grid-cols-2 gap-2">
-                         {loom.status === 'WEAVING' || loom.status === 'WARP_SETUP' || loom.status.startsWith('SETUP_') ? (
-                            <button 
-                               onClick={() => handleTriggerEvent(loom.id, 'PRODUCTION', 'Production Paused', `Manager manually paused ${loom.id}`, 'Delay added', loom.maintenanceStatus, 'IDLE')}
-                               className="py-1.5 flex justify-center items-center gap-1.5 text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-lg transition"
-                            >
-                               <Pause size={12} /> Pause
-                            </button>
-                         ) : (
-                            <button 
-                               onClick={() => handleTriggerEvent(loom.id, 'PRODUCTION', 'Production Resumed', `Manager manually resumed ${loom.id}`, 'Production active', loom.maintenanceStatus, loom.currentDesignId ? 'WEAVING' : 'IDLE')}
-                               className="py-1.5 flex justify-center items-center gap-1.5 text-xs font-semibold bg-emerald-50 text-emerald-700 hover:bg-emerald-100 rounded-lg transition"
-                            >
-                               <Play size={12} /> Resume
-                            </button>
-                         )}
+                    <div className="border-t border-slate-100 pt-4 mt-auto">
+                       {loom.status === 'QC' && (
+                          <div className="mb-3 bg-indigo-50 border border-indigo-100 p-3 rounded-xl">
+                             <div className="text-[10px] font-bold text-indigo-700 uppercase mb-2 animate-pulse flex items-center gap-1">
+                                <AlertTriangle size={12} /> Quality Control Check Required
+                             </div>
+                             <div className="flex gap-2">
+                                <button 
+                                   onClick={() => setQcLoomId(loom.id)}
+                                   className="flex-1 py-1.5 text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition flex justify-center items-center gap-1 shadow-xs"
+                                >
+                                   <CheckCircle2 size={13} /> Inspect & Dispatch
+                                </button>
+                                <button 
+                                   onClick={() => updateLoomState(loom.id, { status: 'WEAVING' })}
+                                   className="py-1.5 px-3 text-xs font-semibold bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-lg transition"
+                                >
+                                   Rework
+                                </button>
+                             </div>
+                          </div>
+                       )}
 
-                         <button 
-                            onClick={() => handleTriggerEvent(loom.id, 'MAINTENANCE', 'Reported Mechanical Failure', `Manager reported a mechanical failure on ${loom.id}.`, 'Production stopped', 'Under Repair', 'MAINTENANCE')}
-                            className="py-1.5 flex justify-center items-center gap-1.5 text-xs font-semibold bg-rose-50 text-rose-700 hover:bg-rose-100 rounded-lg transition"
-                         >
-                            <AlertTriangle size={12} /> Report Failure
-                         </button>
-
-                         <button 
-                            onClick={() => handleTriggerEvent(loom.id, 'MAINTENANCE', 'Maintenance Logged', `Routine maintenance completed on ${loom.id}.`, 'Health restored', 'Healthy', loom.status === 'MAINTENANCE' ? 'IDLE' : loom.status)}
-                            className="py-1.5 flex justify-center items-center gap-1.5 text-xs font-semibold bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg transition"
-                         >
-                            <Wrench size={12} /> Fix / Maint.
-                         </button>
-                         
-                         <button 
-                            onClick={() => handleTriggerEvent(loom.id, 'PRODUCTION', 'Weaver Absent', `Weaver ${loom.weaverName} marked absent for the day.`, 'Output delayed', loom.maintenanceStatus, 'IDLE')}
-                            className="py-1.5 flex justify-center items-center gap-1.5 text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-lg transition"
-                         >
-                            <AlertCircle size={12} /> Mark Absent
-                         </button>
-                      </div>
-                   </div>
+                       <div className="space-y-1">
+                          <label className="text-[10px] font-bold text-stone-500 uppercase block">Manual Override & Pipeline Control:</label>
+                          <select 
+                             className="w-full bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition cursor-pointer"
+                             value={loom.status}
+                             onChange={(e) => {
+                                const val = e.target.value;
+                                if (val === 'ACTION_PAUSE') {
+                                   handleTriggerEvent(loom.id, 'PRODUCTION', 'Production Paused', `Manager manually paused ${loom.id}`, 'Delay added', loom.maintenanceStatus, 'IDLE');
+                                } else if (val === 'ACTION_RESUME') {
+                                   handleTriggerEvent(loom.id, 'PRODUCTION', 'Production Resumed', `Manager manually resumed ${loom.id}`, 'Production active', loom.maintenanceStatus, loom.currentDesignId ? 'WEAVING' : 'IDLE');
+                                } else if (val === 'ACTION_FIX') {
+                                   handleTriggerEvent(loom.id, 'MAINTENANCE', 'Maintenance Logged', `Routine maintenance completed on ${loom.id}.`, 'Health restored', 'Healthy', loom.status === 'MAINTENANCE' ? 'IDLE' : loom.status);
+                                } else if (val === 'ACTION_ABSENT') {
+                                   handleTriggerEvent(loom.id, 'PRODUCTION', 'Weaver Absent', `Weaver ${loom.weaverName} marked absent for the day.`, 'Output delayed', loom.maintenanceStatus, 'IDLE');
+                                } else {
+                                   updateLoomState(loom.id, { status: val });
+                                }
+                             }}
+                          >
+                             <optgroup label="Physical Setup Pipeline">
+                                <option value="SETUP_JACQUARD">SETUP: Jacquard Card Punching (Days 15-11)</option>
+                                <option value="SETUP_SILK_PREP">SETUP: Silk Dyeing & Winding (Days 10-7)</option>
+                                <option value="SETUP_WARP_DRAW">SETUP: Warp Drawing-in (Days 6-3)</option>
+                                <option value="SETUP_CALIBRATION">SETUP: Loom Calibration (Days 2-0)</option>
+                             </optgroup>
+                             <optgroup label="Production & Quality">
+                                <option value="IDLE">IDLE (Awaiting Job)</option>
+                                <option value="WEAVING">WEAVING (Active Production)</option>
+                                <option value="QC">QC (Quality Inspection & Dispatch)</option>
+                             </optgroup>
+                             <optgroup label="Maintenance & Actions">
+                                <option value="MAINTENANCE">MAINTENANCE (Report Failure / Repair)</option>
+                                <option value="ACTION_FIX">🛠️ Fix / Log Maintenance Completed</option>
+                                {loom.status === 'WEAVING' || loom.status.startsWith('SETUP') ? (
+                                   <option value="ACTION_PAUSE">⏸️ Pause Production</option>
+                                ) : (
+                                   <option value="ACTION_RESUME">▶️ Resume Production</option>
+                                )}
+                                <option value="ACTION_ABSENT">👤 Mark Weaver Absent</option>
+                             </optgroup>
+                          </select>
+                       </div>
+                    </div>
                 </div>
              ))}
           </div>
       </div>
+
+      {/* QC Parameter Popup Modal */}
+      {qcLoomId && (
+        <div className="fixed inset-0 z-[100] bg-slate-900/50 backdrop-blur-sm flex items-center justify-center p-4">
+           <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl overflow-hidden animate-scale-up">
+              <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-indigo-50/50">
+                 <h3 className="font-bold text-slate-800">Quality Control Inspection</h3>
+                 <button onClick={() => setQcLoomId(null)} className="text-stone-400 hover:text-slate-700">✕</button>
+              </div>
+              <div className="p-6 space-y-4">
+                 <div>
+                    <label className="text-xs font-bold text-slate-600 uppercase mb-1.5 block">Zari Fastness</label>
+                    <select className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none">
+                       <option>Pass (Grade A)</option>
+                       <option>Pass (Grade B)</option>
+                       <option>Fail</option>
+                    </select>
+                 </div>
+                 <div>
+                    <label className="text-xs font-bold text-slate-600 uppercase mb-1.5 block">Thread Count Verification</label>
+                    <select className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none">
+                       <option>Optimal</option>
+                       <option>Acceptable Variance</option>
+                       <option>Rejected</option>
+                    </select>
+                 </div>
+                 <div>
+                    <label className="text-xs font-bold text-slate-600 uppercase mb-1.5 block">Inspector Notes</label>
+                    <textarea className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none" rows={2} placeholder="Optional notes..."></textarea>
+                 </div>
+              </div>
+              <div className="p-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
+                 <button onClick={() => setQcLoomId(null)} className="px-4 py-2 text-sm font-semibold text-slate-600 hover:text-slate-800">Cancel</button>
+                 <button 
+                    onClick={() => {
+                       const { registerDispatchTransaction } = useSimulationStore.getState();
+                       if (registerDispatchTransaction) registerDispatchTransaction(qcLoomId);
+                       updateLoomState(qcLoomId, { status: 'IDLE', sareesCompleted: 0, currentDesignId: null });
+                       setQcLoomId(null);
+                    }} 
+                    className="px-6 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold rounded-lg shadow-sm flex items-center gap-2"
+                 >
+                    <CheckCircle2 size={16} /> Complete Order & Log
+                 </button>
+              </div>
+           </div>
+        </div>
+      )}
 
       {isDesignIntakeOpen && (
         <DesignIntakeForm onClose={() => setIsDesignIntakeOpen(false)} />

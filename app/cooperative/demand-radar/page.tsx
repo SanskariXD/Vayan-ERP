@@ -15,10 +15,11 @@ function diffDays(date1: string, date2: string) {
 }
 
 export default function DemandIntelligencePage() {
-  const { state, isLoaded, initialize, queueDesign } = useSimulationStore();
+  const { state, isLoaded, initialize, queueDesign, addToast } = useSimulationStore();
   const [printedDesigns, setPrintedDesigns] = useState<Record<string, boolean>>({});
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [designOffset, setDesignOffset] = useState(0);
+  const [selectedDesignForModal, setSelectedDesignForModal] = useState<any>(null);
 
   useEffect(() => {
     initialize();
@@ -61,20 +62,21 @@ export default function DemandIntelligencePage() {
   const handleSendToQueue = (design: any) => {
      setPrintedDesigns(prev => ({ ...prev, [design.id]: true }));
      
-     // Dispatch to Centralized Management Design Queue
      queueDesign({
         id: `${design.id}-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
         name: design.name,
         imageUrl: design.imageUrl || '',
         complexityLevel: design.complexity || design.complexityLevel || 3,
-        silkRequired: design.silkRequired || 4.8,
-        zariRequired: design.zariRequired || 1.2,
         expectedWeavingDays: design.expectedWeavingDays || 6,
         setupDays: design.setupDays || 2,
         expectedSellingPrice: design.expectedSellingPrice || 15000,
         source: 'Demand Intelligence',
+        category: design.category || 'Trending',
+        tags: [design.globalTrendMatch].filter(Boolean) as string[],
         notes: `Selected from Design Matrix`
      });
+
+     if (addToast) addToast(`Sent ${design.name} to Design Queue`, 'success');
 
      setTimeout(() => {
         setPrintedDesigns(prev => ({ ...prev, [design.id]: false }));
@@ -168,7 +170,10 @@ export default function DemandIntelligencePage() {
                    ).map((design: any) => (
                       <div key={design.id} className="border border-slate-100 rounded-xl hover:border-indigo-100 hover:shadow-md transition bg-slate-50/50 overflow-hidden flex flex-col justify-between">
                          {design.imageUrl && (
-                            <div className="relative h-28 w-full overflow-hidden border-b border-slate-100 shrink-0">
+                            <div 
+                               className={`relative h-28 w-full overflow-hidden border-b border-slate-100 shrink-0 ${design.globalTrendMatch ? 'cursor-pointer' : ''}`}
+                               onClick={() => design.globalTrendMatch && setSelectedDesignForModal(design)}
+                            >
                                {design.globalTrendMatch && (
                                   <div className="absolute top-2 left-2 z-10 bg-slate-900/90 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-lg border border-slate-700 flex items-center gap-1.5">
                                      <span>🌍</span> {design.globalTrendMatch}
@@ -322,6 +327,79 @@ export default function DemandIntelligencePage() {
 
          </div>
       </div>
+      
+      {/* TRADITIONAL VS MODERN COMPARISON MODAL */}
+      {selectedDesignForModal && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl w-full max-w-4xl shadow-2xl overflow-hidden animate-scale-up">
+            
+            <div className="flex justify-between items-center p-5 border-b border-slate-100">
+               <div>
+                  <h3 className="text-lg font-bold text-slate-800">Design Adaptation Analysis</h3>
+                  <p className="text-xs text-stone-500 mt-1">{selectedDesignForModal.name}</p>
+               </div>
+               <button onClick={() => setSelectedDesignForModal(null)} className="p-2 text-stone-400 hover:text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-full transition">
+                 ✕
+               </button>
+            </div>
+            
+            <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+               {/* Left: Original Traditional */}
+               <div className="space-y-3">
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
+                     <span className="w-2 h-2 rounded-full bg-slate-300"></span> Original Traditional
+                  </div>
+                  <div className="aspect-square rounded-xl overflow-hidden bg-slate-100 border border-slate-200 relative">
+                     <img 
+                       src={selectedDesignForModal.adaptationDetails?.originalImage || "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=800&q=80"} 
+                       alt="Original Traditional" 
+                       className="w-full h-full object-cover filter grayscale opacity-80 mix-blend-multiply" 
+                     />
+                  </div>
+               </div>
+
+               {/* Right: Modernized */}
+               <div className="space-y-3">
+                  <div className="text-xs font-bold text-indigo-600 uppercase tracking-widest flex items-center gap-2">
+                     <span className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse"></span> Market Adapted (Trend: {selectedDesignForModal.globalTrendMatch})
+                  </div>
+                  <div className="aspect-square rounded-xl overflow-hidden bg-white border-2 border-indigo-100 shadow-inner relative">
+                     <img 
+                       src={selectedDesignForModal.imageUrl} 
+                       alt="Modernized" 
+                       className="w-full h-full object-cover" 
+                     />
+                  </div>
+               </div>
+            </div>
+            
+            <div className="bg-slate-50 p-6 border-t border-slate-100">
+               <h4 className="text-sm font-bold text-slate-800 mb-3">Key Structural Changes</h4>
+               <ul className="space-y-2">
+                  {selectedDesignForModal.adaptationDetails?.changes?.map((change: string, idx: number) => (
+                    <li key={idx} className="text-sm text-slate-600 flex items-start gap-2">
+                       <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />
+                       {change}
+                    </li>
+                  )) || (
+                    <>
+                      <li className="text-sm text-slate-600 flex items-start gap-2">
+                         <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" /> Reduced Zari density to appeal to minimal aesthetics.
+                      </li>
+                      <li className="text-sm text-slate-600 flex items-start gap-2">
+                         <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" /> Lightened body shade (pastel shift) to align with Global Spring/Summer trends.
+                      </li>
+                      <li className="text-sm text-slate-600 flex items-start gap-2">
+                         <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" /> Preserved original border motif integrity for cultural authenticity.
+                      </li>
+                    </>
+                  )}
+               </ul>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

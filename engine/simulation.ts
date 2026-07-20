@@ -213,6 +213,58 @@ export class SimulationEngine {
     this.tick(0);
   }
 
+  public createProductionJob(designId: string, warpId: string, model: string, warpDetails?: any) {
+    if (!this.state) return;
+    const design = (this.state.designs || []).find((d: any) => d.id === designId) || 
+                   (this.state.productionReadyDesigns || []).find((d: any) => d.id === designId);
+    
+    // Update the warp to ALLOCATED and set configured warp details
+    if (this.state.warps) {
+       const warp = this.state.warps.find((w: any) => w.id === warpId || w.designId === designId);
+       if (warp) {
+          warp.status = 'ALLOCATED';
+          warp.materialAllocated = true;
+          if (warpDetails) {
+             if (warpDetails.warpLength) warp.warpLength = warpDetails.warpLength;
+             if (warpDetails.primaryColor) warp.primaryColor = warpDetails.primaryColor;
+             if (warpDetails.silkType) warp.silkType = warpDetails.silkType;
+             if (warpDetails.estimatedSarees) warp.estimatedSarees = warpDetails.estimatedSarees;
+          }
+       }
+    }
+
+    // Remove the allocated design from productionReadyDesigns
+    if (this.state.productionReadyDesigns) {
+       this.state.productionReadyDesigns = this.state.productionReadyDesigns.filter((d: any) => d.id !== designId);
+    }
+
+    const newJob = {
+       id: `JOB-${Math.floor(1000 + Math.random() * 9000)}`,
+       name: `Production Run - ${design?.name || 'Handloom Design'}`,
+       designId: designId,
+       warpId: warpId,
+       type: 'Regular',
+       quantity: warpDetails?.estimatedSarees || 12,
+       priority: 'Medium',
+       expectedDeliveryDate: '2026-09-01',
+       notes: 'Allocated via Warp Management',
+       status: 'QUEUED',
+       productionModel: model,
+       setupDays: design?.setupDays || 5,
+       estimatedRevenue: (design?.expectedSellingPrice || 12000) * (warpDetails?.estimatedSarees || 12),
+       estimatedProfit: ((design?.expectedSellingPrice || 12000) * (warpDetails?.estimatedSarees || 12)) * 0.25
+    };
+    
+    if (!this.state.pendingExecutions) this.state.pendingExecutions = [];
+    this.state.pendingExecutions.push(newJob);
+
+    if (design && checkMaterialAvailability(this.state.inventory, design, 12)) {
+      this.state.inventory = reserveMaterialsForWarp(this.state.inventory, design, 12);
+    }
+    
+    this.tick(0);
+  }
+
   public assignLoomToJob(jobId: string, manualLoomId?: string) {
     if (!this.state) return false;
     const job = this.state.pendingExecutions.find((j: any) => j.id === jobId);
@@ -232,8 +284,16 @@ export class SimulationEngine {
     }
 
     if (targetLoomId) {
-      this.deployLoom(targetLoomId, job.designId);
-      job.status = 'Assigned';
+      job.targetLoom = targetLoomId;
+      const loom = this.state.looms.find((l: any) => l.id === targetLoomId);
+      
+      if (loom && loom.status === 'IDLE') {
+         this.deployLoom(targetLoomId, job.designId, true); // skip material check
+         job.status = 'IN_PROGRESS';
+      } else {
+         job.status = 'Assigned'; // Queued for this loom
+      }
+      
       this.tick(0);
       return true;
     }
@@ -280,6 +340,23 @@ export class SimulationEngine {
        this.state.productionReadyDesigns.push(design);
        this.state.designs.push(design);
        this.state.designQueue.splice(queuedIndex, 1);
+       
+       // Automatically generate an Unallocated Warp for this design
+       if (!this.state.warps) this.state.warps = [];
+       this.state.warps.push({
+         id: `warp-${Date.now().toString(36).substring(4)}`,
+         designId: design.id,
+         designName: design.name,
+         imageUrl: design.imageUrl,
+         category: design.category || 'Traditional',
+         status: 'UNALLOCATED',
+         warpLength: 100,
+         estimatedSarees: 12,
+         silkType: design.silkType || 'Mulberry Grade A',
+         primaryColor: 'Royal Crimson',
+         materialAllocated: false
+       });
+       
        this.tick(0);
     }
   }
@@ -304,12 +381,72 @@ export class SimulationEngine {
     if (!this.state) return;
     if (!this.state.purchaseOrders) this.state.purchaseOrders = [];
     if (!this.state.materials) this.state.materials = [];
+    if (!this.state.transactions) this.state.transactions = [];
+    
     this.state.purchaseOrders.push(po);
     const mat = this.state.materials.find((m: any) => m.id === po.materialId);
     if (mat) {
        mat.orderedQuantity += po.quantity;
        mat.incomingQuantity += po.quantity;
+       
+       // Cost calculation for PO
+       // Assume a default unit price if not specified
+       const unitPrice = mat.type === 'Silk Yarn' ? 4500 : mat.type.includes('Zari') ? 8000 : 500;
+       const totalCost = unitPrice * po.quantity;
+       
+       this.state.transactions.unshift({
+          id: `txn-po-${Date.now()}`,
+          date: this.state.cooperative.currentSimulatedDate,
+          description: `PO ${po.id.toUpperCase()}: ${mat.name} (${po.quantity} ${mat.unit})`,
+          amount: totalCost,
+          type: 'Expense',
+          category: 'Material Purchase'
+       });
     }
+    this.tick(0);
+  }
+
+  public registerDispatchTransaction(loomId: string) {
+    if (!this.state) return;
+    if (!this.state.transactions) this.state.transactions = [];
+    
+    const loom = this.state.looms.find((l: any) => l.id === loomId);
+    if (!loom || !loom.currentDesignId) return;
+    
+    const design = this.state.designs.find((d: any) => d.id === loom.currentDesignId);
+    const sareesCompleted = loom.targetSarees || 12;
+    
+    // Log Wage Payout (assuming Rs. 1500 per saree)
+    const totalWage = sareesCompleted * 1500;
+    this.state.transactions.unshift({
+        id: `txn-wage-${Date.now()}`,
+        date: this.state.cooperative.currentSimulatedDate,
+        description: `Wage Payout: ${loom.weaverName || loom.id} (${sareesCompleted} sarees)`,
+        amount: totalWage,
+        type: 'Expense',
+        category: 'Wage Payout'
+    });
+    
+    // Log Sales Revenue
+    const sellingPrice = design?.expectedSellingPrice || 8000;
+    const totalRevenue = sareesCompleted * sellingPrice;
+    this.state.transactions.unshift({
+        id: `txn-rev-${Date.now()}`,
+        date: this.state.cooperative.currentSimulatedDate,
+        description: `Order Fulfillment: ${design?.name || 'Custom'} (${sareesCompleted} sarees)`,
+        amount: totalRevenue,
+        type: 'Income',
+        category: 'Sales'
+    });
+    
+    // Mark corresponding order as Completed
+    if (this.state.orders) {
+        const matchingOrder = this.state.orders.find((o: any) => o.designId === loom.currentDesignId && o.status !== 'Completed');
+        if (matchingOrder) {
+            matchingOrder.status = 'Completed';
+        }
+    }
+    
     this.tick(0);
   }
 
@@ -370,20 +507,22 @@ export class SimulationEngine {
     this.tick(0); // Recalculate everything without advancing time
   }
 
-  public deployLoom(loomId: string, designId: string) {
+  public deployLoom(loomId: string, designId: string, skipMaterialCheck = false) {
     if (!this.state) return;
     const loom = this.state.looms.find((l: any) => l.id === loomId);
     const design = this.state.designs.find((d: any) => d.id === designId);
     
     if (loom && design) {
-      // Check if we have materials
-      if (!checkMaterialAvailability(this.state.inventory, design, 12)) {
-        console.warn("Insufficient materials to start warp.");
-        return false;
-      }
+      if (!skipMaterialCheck) {
+        // Check if we have materials
+        if (!checkMaterialAvailability(this.state.inventory, design, 12)) {
+          console.warn("Insufficient materials to start warp.");
+          return false;
+        }
 
-      // Reserve materials for this batch
-      this.state.inventory = reserveMaterialsForWarp(this.state.inventory, design, 12);
+        // Reserve materials for this batch
+        this.state.inventory = reserveMaterialsForWarp(this.state.inventory, design, 12);
+      }
 
       loom.currentDesignId = designId;
       loom.status = 'WARP_SETUP';

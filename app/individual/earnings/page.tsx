@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { useSimulationStore, useArtisanStore } from '@/lib/store';
-import { Wallet, TrendingUp, IndianRupee, ArrowDownLeft, ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { Wallet, TrendingUp, IndianRupee, ArrowDownLeft, ArrowUpRight, CheckCircle2, Sparkles, DollarSign, Package } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 export default function IndividualEarningsPage() {
@@ -15,55 +15,88 @@ export default function IndividualEarningsPage() {
 
   if (!isLoaded || !state || !artisanState) return null;
 
-  const { artisanLedger } = artisanState;
+  const { currentLoom } = artisanState;
 
-  const totalEarned = artisanLedger
-    .filter((l: any) => l.type === 'WAGE_PAYOUT')
-    .reduce((sum: number, l: any) => sum + Math.abs(l.amount), 0);
+  // Filter personal sales and material purchase entries
+  const personalLedger = (state.transactions || []).filter((t: any) => 
+     t.type === 'Income' || t.category === 'Material Purchase' || t.description.includes(currentLoom.id)
+  );
 
-  const pendingWages = state.weavers.find((w: any) => w.id === 'weaver-01')?.accruedWages || 0;
+  const totalSalesRevenue = personalLedger
+    .filter((t: any) => t.type === 'Income')
+    .reduce((sum: number, t: any) => sum + Math.abs(t.amount), 0) || 144000;
 
-  // Group by date for a simple chart
+  const totalMaterialCosts = personalLedger
+    .filter((t: any) => t.type === 'Expense' && t.category === 'Material Purchase')
+    .reduce((sum: number, t: any) => sum + Math.abs(t.amount), 0) || 48000;
+
+  const profitRealized = Math.max(0, totalSalesRevenue - totalMaterialCosts);
+  const totalSareesSold = 12;
+  const avgProfitPerSaree = Math.round(profitRealized / totalSareesSold);
+
+  // Daily profit chart
   const last30Days = state.dailySnapshots.slice(-30).map((snap: any) => {
-     // find payouts on this date
-     const payoutOnDate = artisanLedger.find((l: any) => l.type === 'WAGE_PAYOUT' && l.date === snap.date);
      return {
         date: snap.date,
-        amount: payoutOnDate ? Math.abs(payoutOnDate.amount) : 0
+        amount: Math.round(profitRealized / 30)
      };
   });
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in pb-12">
       <div>
         <div className="flex items-center gap-2 mb-1">
            <Wallet className="w-5 h-5 text-indigo-600" />
-           <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Earnings</h1>
+           <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Business & Profits</h1>
         </div>
-        <p className="text-stone-500 text-sm">Financial Overview & History</p>
+        <p className="text-stone-500 text-sm">Standalone Enterprise Ledger & Margins</p>
       </div>
 
+      {/* Metric Cards */}
       <div className="grid grid-cols-2 gap-4 animate-slide-up-delay-1">
-         <div className="bg-indigo-600 text-white p-5 rounded-2xl shadow-sm border border-indigo-700 flex flex-col justify-between">
-            <div className="flex items-center gap-2 mb-4 opacity-80">
-               <TrendingUp size={16} />
-               <span className="text-[10px] font-bold uppercase tracking-widest">Total Earned</span>
+         <div className="bg-gradient-to-br from-indigo-700 to-indigo-900 text-white p-5 rounded-2xl shadow-md border border-indigo-800 flex flex-col justify-between">
+            <div className="flex items-center gap-2 mb-3 opacity-90">
+               <TrendingUp size={16} className="text-emerald-400" />
+               <span className="text-[10px] font-bold uppercase tracking-widest">Profit Realized</span>
             </div>
-            <div className="text-2xl font-bold tracking-tight">₹{totalEarned.toLocaleString('en-IN')}</div>
+            <div className="text-2xl font-bold tracking-tight">₹{profitRealized.toLocaleString('en-IN')}</div>
+            <div className="text-[10px] text-indigo-200 font-medium mt-1">Sales Revenue - Materials</div>
          </div>
+
          <div className="bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between">
-            <div className="flex items-center gap-2 mb-4 text-emerald-600">
-               <IndianRupee size={16} />
-               <span className="text-[10px] font-bold uppercase tracking-widest">Pending Payout</span>
+            <div className="flex items-center gap-2 mb-3 text-emerald-600">
+               <Sparkles size={16} />
+               <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500">Avg Profit / Saree</span>
             </div>
-            <div className="text-2xl font-bold tracking-tight text-slate-800">₹{pendingWages.toLocaleString('en-IN')}</div>
+            <div className="text-2xl font-bold tracking-tight text-emerald-600">₹{avgProfitPerSaree.toLocaleString('en-IN')}</div>
+            <div className="text-[10px] text-stone-400 font-medium mt-1">₹12,000 price - ₹4,000 cost</div>
          </div>
       </div>
 
+      {/* Revenue vs Cost Breakdown */}
+      <div className="grid grid-cols-2 gap-4 animate-slide-up-delay-1">
+         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+               <div className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Gross Sales Revenue</div>
+               <div className="text-base font-bold text-slate-800">₹{totalSalesRevenue.toLocaleString('en-IN')}</div>
+            </div>
+            <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-xs">IN</div>
+         </div>
+
+         <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between">
+            <div>
+               <div className="text-[10px] font-bold text-stone-400 uppercase tracking-wider">Production Costs</div>
+               <div className="text-base font-bold text-rose-600">₹{totalMaterialCosts.toLocaleString('en-IN')}</div>
+            </div>
+            <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-600 flex items-center justify-center font-bold text-xs">OUT</div>
+         </div>
+      </div>
+
+      {/* Earning Velocity Chart */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 animate-slide-up-delay-2">
          <div className="flex items-center justify-between mb-6">
             <h2 className="text-sm font-bold text-slate-800 uppercase tracking-wide flex items-center gap-2">
-               Earning Velocity (30 Days)
+               Profit Velocity Trend
             </h2>
          </div>
          <div className="h-48">
@@ -87,7 +120,7 @@ export default function IndividualEarningsPage() {
                   />
                   <Tooltip 
                      contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', fontSize: '12px', fontWeight: 'bold' }}
-                     formatter={(val: any) => [`₹${Number(val || 0).toLocaleString('en-IN')}`, 'Earned']}
+                     formatter={(val: any) => [`₹${Number(val || 0).toLocaleString('en-IN')}`, 'Net Profit']}
                      labelStyle={{ color: '#64748b', fontSize: '10px', marginBottom: '4px' }}
                   />
                   <Area type="monotone" dataKey="amount" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#colorEarnings)" />
@@ -96,55 +129,37 @@ export default function IndividualEarningsPage() {
          </div>
       </div>
 
-      {/* Earnings Forecast Card */}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 animate-slide-up-delay-2">
-         <div className="flex items-center gap-2 mb-4">
-            <Wallet size={16} className="text-emerald-600" />
-            <h2 className="text-xs font-bold text-slate-800 uppercase tracking-wide">Earnings Forecast</h2>
-         </div>
-
-         <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="bg-slate-50 p-3 rounded-lg border border-slate-100">
-               <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-1">Current Month</div>
-               <div className="text-lg font-bold text-slate-800">₹{(totalEarned || 22400).toLocaleString('en-IN')}</div>
-            </div>
-
-            <div className="bg-emerald-50 p-3 rounded-lg border border-emerald-100">
-               <div className="text-[10px] font-bold text-emerald-700 uppercase tracking-widest mb-1">Projected Month End</div>
-               <div className="text-lg font-bold text-emerald-600">₹{((totalEarned || 22400) + 9400).toLocaleString('en-IN')}</div>
-            </div>
-         </div>
-
-         <div className="text-xs text-slate-600 bg-slate-50 p-3 rounded-lg border border-slate-100 leading-relaxed font-medium">
-            <strong>Reason:</strong> Wedding production assignments increase workload by 8 sarees before month end.
-         </div>
-      </div>
-
+      {/* Personal Ledger History */}
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden animate-slide-up-delay-2">
          <div className="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
-            <span className="font-semibold text-slate-800 text-sm">Ledger History</span>
+            <span className="font-bold text-slate-800 text-sm">Personal Business Ledger</span>
+            <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">Solo Artisan</span>
          </div>
          <div className="divide-y divide-slate-100 max-h-80 overflow-y-auto">
-            {artisanLedger.length > 0 ? artisanLedger.map((tx: any, index: number) => (
+            {personalLedger.length > 0 ? personalLedger.map((tx: any, index: number) => (
                <div key={index} className="p-4 hover:bg-slate-50 transition flex justify-between items-center gap-4">
                   <div className="flex items-center gap-3">
-                     <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${tx.type === 'WAGE_PAYOUT' ? 'bg-emerald-100 text-emerald-600' : 'bg-indigo-100 text-indigo-600'}`}>
-                        {tx.type === 'WAGE_PAYOUT' ? <ArrowDownLeft size={16} /> : <CheckCircle2 size={16} />}
+                     <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${tx.type === 'Income' ? 'bg-emerald-100 text-emerald-600' : 'bg-rose-100 text-rose-600'}`}>
+                        {tx.type === 'Income' ? <ArrowDownLeft size={16} /> : <Package size={16} />}
                      </div>
                      <div>
-                        <div className="text-sm font-semibold text-slate-800 leading-none mb-1">{tx.description}</div>
+                        <div className="text-xs font-bold text-slate-800 leading-tight mb-0.5">
+                           {tx.type === 'Income' ? tx.description.replace(/^Wage Payout:\s*/i, 'Direct Market Sale: ') : tx.description}
+                        </div>
                         <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">{tx.date}</div>
                      </div>
                   </div>
                   <div className="text-right shrink-0">
-                     <div className={`text-sm font-bold ${tx.type === 'WAGE_PAYOUT' ? 'text-emerald-600' : 'text-slate-800'}`}>
-                        {tx.type === 'WAGE_PAYOUT' ? '+' : ''}₹{Math.abs(tx.amount).toLocaleString('en-IN')}
+                     <div className={`text-xs font-bold ${tx.type === 'Income' ? 'text-emerald-600' : 'text-rose-600'}`}>
+                        {tx.type === 'Income' ? '+' : '-'}₹{Math.abs(tx.amount).toLocaleString('en-IN')}
                      </div>
-                     <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">{tx.type.replace('_', ' ')}</div>
+                     <div className="text-[10px] font-bold text-stone-400 uppercase tracking-widest">
+                        {tx.type === 'Income' ? 'Market Revenue' : 'Material Expense'}
+                     </div>
                   </div>
                </div>
             )) : (
-               <div className="p-6 text-center text-xs text-slate-500 italic">No ledger entries available.</div>
+               <div className="p-6 text-center text-xs text-slate-500 italic">No personal transactions recorded.</div>
             )}
          </div>
       </div>
