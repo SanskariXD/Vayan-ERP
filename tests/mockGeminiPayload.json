@@ -1,0 +1,22 @@
+{
+  "design_analysis": {
+    "confidence_match": 88,
+    "setup_days": 15,
+    "complexity": "E2E-TESTING-LEVEL-5",
+    "extracted_palette": [
+      "#FF0000",
+      "#00FF00",
+      "#0000FF",
+      "#FFFF00",
+      "#FF00FF"
+    ],
+    "zari_rules": "MOCK_RULES: Exaggerated Zari Threading Required across the primary weaving grid borders. Check constraints.",
+    "motif_geometry": "TEST-E2E-GEOMETRY: The asset enforces a strictly rendered diagonal border array specifically structured to test CSS visual bounding limits."
+  },
+  "scheduler_inputs": {
+    "title": "E2E: MOCK_VERIFICATION_TITLE",
+    "seasonality_rationale": "MOCK-E2E-RATIONALE: This line should tightly map to the seasonality display and undergo clamp truncation without shifting the block heights visually.",
+    "efficiency_rationale": "MOCK-E2E-EFFICIENCY: 15-day layout delay safely tested across boundary limitations in the NextJS layout UI.",
+    "finance_rationale": "MOCK-E2E-FINANCE: Verifying numeric margin placement explicitly inside the AI Prescriptive queues rendering tree."
+  }
+}

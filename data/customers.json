@@ -1,0 +1,46 @@
+[
+  {
+    "id": "cust-01",
+    "name": "Nalli Silks",
+    "type": "Retailer",
+    "averageOrderSize": 50,
+    "preferredDesigns": ["Wedding", "Luxury"],
+    "paymentDelayDays": 15,
+    "city": "Chennai",
+    "state": "Tamil Nadu",
+    "priority": "High"
+  },
+  {
+    "id": "cust-02",
+    "name": "Delhi Ethnic Wear",
+    "type": "Boutique",
+    "averageOrderSize": 15,
+    "preferredDesigns": ["Festival"],
+    "paymentDelayDays": 0,
+    "city": "New Delhi",
+    "state": "Delhi",
+    "priority": "Medium"
+  },
+  {
+    "id": "cust-03",
+    "name": "Global Threads Exports",
+    "type": "Export Buyer",
+    "averageOrderSize": 100,
+    "preferredDesigns": ["Premium", "Luxury"],
+    "paymentDelayDays": 30,
+    "city": "Bangalore",
+    "state": "Karnataka",
+    "priority": "High"
+  },
+  {
+    "id": "cust-04",
+    "name": "Vanya Online",
+    "type": "Online Seller",
+    "averageOrderSize": 20,
+    "preferredDesigns": ["Regular"],
+    "paymentDelayDays": 7,
+    "city": "Mumbai",
+    "state": "Maharashtra",
+    "priority": "Low"
+  }
+]

@@ -1,0 +1,23 @@
+[
+  {
+    "festival": "Wedding Season",
+    "date": "2026-09-01",
+    "demandMultiplier": 2.2,
+    "preparationLeadTime": 60,
+    "affectedCategories": ["Wedding", "Luxury"]
+  },
+  {
+    "festival": "Diwali",
+    "date": "2026-11-08",
+    "demandMultiplier": 1.8,
+    "preparationLeadTime": 45,
+    "affectedCategories": ["Festival", "Premium", "Luxury"]
+  },
+  {
+    "festival": "Pongal",
+    "date": "2027-01-14",
+    "demandMultiplier": 1.4,
+    "preparationLeadTime": 30,
+    "affectedCategories": ["Festival", "Premium"]
+  }
+]

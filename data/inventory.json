@@ -1,0 +1,74 @@
+{
+  "silkYarn": {
+    "available": 250,
+    "reserved": 0,
+    "onOrder": 50,
+    "consumed": 0,
+    "safetyStock": 50,
+    "reorderPoint": 80,
+    "unit": "kg",
+    "minimumThreshold": 50,
+    "supplier": "Kanchipuram Silk Board",
+    "restockLeadTime": 5
+  },
+  "goldZari": {
+    "available": 100,
+    "reserved": 0,
+    "onOrder": 20,
+    "consumed": 0,
+    "safetyStock": 20,
+    "reorderPoint": 40,
+    "unit": "spools",
+    "minimumThreshold": 20,
+    "supplier": "Surat Zari Mills",
+    "restockLeadTime": 7
+  },
+  "silverZari": {
+    "available": 80,
+    "reserved": 0,
+    "onOrder": 0,
+    "consumed": 0,
+    "safetyStock": 15,
+    "reorderPoint": 30,
+    "unit": "spools",
+    "minimumThreshold": 15,
+    "supplier": "Surat Zari Mills",
+    "restockLeadTime": 7
+  },
+  "jacquardCards": {
+    "available": 5000,
+    "reserved": 0,
+    "onOrder": 0,
+    "consumed": 0,
+    "safetyStock": 1000,
+    "reorderPoint": 2000,
+    "unit": "cards",
+    "minimumThreshold": 1000,
+    "supplier": "Local Card Punchers",
+    "restockLeadTime": 2
+  },
+  "dyes": {
+    "available": 40,
+    "reserved": 0,
+    "onOrder": 0,
+    "consumed": 0,
+    "safetyStock": 10,
+    "reorderPoint": 20,
+    "unit": "kg",
+    "minimumThreshold": 10,
+    "supplier": "Natural Dyes Co.",
+    "restockLeadTime": 3
+  },
+  "packaging": {
+    "available": 400,
+    "reserved": 0,
+    "onOrder": 100,
+    "consumed": 0,
+    "safetyStock": 100,
+    "reorderPoint": 150,
+    "unit": "boxes",
+    "minimumThreshold": 100,
+    "supplier": "Chennai Packaging",
+    "restockLeadTime": 4
+  }
+}

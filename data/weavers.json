@@ -1,0 +1,80 @@
+[
+  {
+    "id": "weaver-01",
+    "name": "Narayanan S.",
+    "experienceYears": 15,
+    "dailyHours": 8,
+    "skillLevel": 5,
+    "averageProductivity": 1.05,
+    "currentLoomId": "loom-01",
+    "monthlyWage": 24000,
+    "attendancePercent": 98,
+    "leaveDays": 0,
+    "specializations": ["Silk", "Temple Border"]
+  },
+  {
+    "id": "weaver-02",
+    "name": "Meenakshi R.",
+    "experienceYears": 12,
+    "dailyHours": 8,
+    "skillLevel": 4,
+    "averageProductivity": 0.95,
+    "currentLoomId": "loom-02",
+    "monthlyWage": 22000,
+    "attendancePercent": 95,
+    "leaveDays": 1,
+    "specializations": ["Banarasi", "Bridal"]
+  },
+  {
+    "id": "weaver-03",
+    "name": "Krishnaswamy P.",
+    "experienceYears": 8,
+    "dailyHours": 8,
+    "skillLevel": 3,
+    "averageProductivity": 1.0,
+    "currentLoomId": "loom-03",
+    "monthlyWage": 18000,
+    "attendancePercent": 99,
+    "leaveDays": 0,
+    "specializations": ["Soft Silk"]
+  },
+  {
+    "id": "weaver-04",
+    "name": "Saradha V.",
+    "experienceYears": 20,
+    "dailyHours": 8,
+    "skillLevel": 5,
+    "averageProductivity": 1.1,
+    "currentLoomId": "loom-04",
+    "monthlyWage": 26000,
+    "attendancePercent": 100,
+    "leaveDays": 0,
+    "specializations": ["Silk", "Temple Border", "Bridal"]
+  },
+  {
+    "id": "weaver-06",
+    "name": "Lakshmi T.",
+    "experienceYears": 5,
+    "dailyHours": 8,
+    "skillLevel": 2,
+    "averageProductivity": 0.85,
+    "currentLoomId": "loom-06",
+    "monthlyWage": 14000,
+    "attendancePercent": 92,
+    "leaveDays": 2,
+    "specializations": ["Regular"]
+  },
+  {
+    "id": "weaver-07",
+    "name": "Selvam K.",
+    "experienceYears": 18,
+    "dailyHours": 8,
+    "skillLevel": 5,
+    "averageProductivity": 1.0,
+    "currentLoomId": "loom-07",
+    "monthlyWage": 25000,
+    "attendancePercent": 96,
+    "leaveDays": 0,
+    "specializations": ["Temple Border", "Banarasi"]
+  }
+]

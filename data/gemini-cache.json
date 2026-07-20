@@ -1,0 +1,548 @@
+{
+  "f16b2bb3225cd286ab630ff196d8bb77ca74cc05cf8ef85c3a7d619893a67a8b": {
+    "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=300&q=80",
+    "cached_at": "2026-07-18T17:15:58.408Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 92,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,400 Warp",
+        "extracted_palette": [
+          "#4E315D",
+          "#C3A154",
+          "#BE163F",
+          "#1A1919",
+          "#D81B21"
+        ],
+        "zari_rules": "Dense gold zari filling the border using supplementary weft weaving, framed by a vibrant magenta-red silk selvedge (Kaddi border technique) to prevent fraying and highlight the zari depth.",
+        "motif_geometry": "Intricate, continuous floral vine (creeper/lata) patterns running warp-way inside a broad 6-inch border, flanked by micro-geometric diamond (rudraksha/paisa) secondary borders."
+      },
+      "scheduler_inputs": {
+        "title": "Royal Violet Zari Brocade Saree",
+        "seasonality_rationale": "Deep royal violet paired with antique gold zari aligns perfectly with the high-demand Varamahalakshmi and Dussehra festival cycle, where traditional auspicious colors command premium pricing.",
+        "efficiency_rationale": "By standardizing the purple warp across 15 looms in the cooperative, we can run warp prep in a single batch, reducing preparation downtime. The jacquard cards can be shared or replicated easily across identical 240-hook setups.",
+        "finance_rationale": "High-density zari borders increase the perceived luxury value of the handloom product, enabling cooperative societies to command a 35% higher gross margin compared to plain or small-border sarees with identical body weave."
+      }
+    }
+  },
+  "7e8b67b2c176d13f6989fe4e25027c236c257f1e2096bc169d619003fe2fc58c": {
+    "image_url": "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=300&q=80",
+    "cached_at": "2026-07-18T17:16:08.816Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 85,
+        "setup_days": 15,
+        "complexity": "Level 4 - 1,800 Warp",
+        "extracted_palette": [
+          "#E0ECE8",
+          "#C3D4CF",
+          "#D1C2A5",
+          "#4B443C",
+          "#A28475"
+        ],
+        "zari_rules": "Fine 1-inch zari border along the selvedge of the sheer body using 2g half-fine gold zari, with tiny star/circular zari buttas distributed uniformly in the field.",
+        "motif_geometry": "Minimalist circular gold zari buttas (1cm diameter) evenly distributed across the sheer field, framed by a continuous solid gold zari mini-border."
+      },
+      "scheduler_inputs": {
+        "title": "Pastel Organza-Tissue Fusion Dupatta and Saree",
+        "seasonality_rationale": "Aligns perfectly with the contemporary summer festive season and modern wedding guest trousseaus, where lightweight sheer fabrics with subtle gold zari are preferred over heavy silks.",
+        "efficiency_rationale": "Utilizes existing 120-jacquard capacity on 20-loom cooperative configurations by group-scheduling the warp beam with a standard 80-count silk-cotton blend to minimize loom downtime.",
+        "finance_rationale": "High profit margins on lightweight festive wear due to low raw zari weight requirements combined with high perceived luxury value of sheer pastels, optimizing cash flow for cooperative societies."
+      }
+    }
+  },
+  "135aeefd019d26ee92ef81441df21f36985c8a4a5997d2a542c67d1ca00e9e0f": {
+    "image_url": "https://i.pinimg.com/736x/13/34/f4/1334f4fa39ecd87bdefb84e28e4aac86.jpg",
+    "cached_at": "2026-07-19T07:10:11.379Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 92,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,400 Warp (Double Jacquard Body & Border)",
+        "extracted_palette": [
+          "#532a61",
+          "#d1cfcf",
+          "#b5975f",
+          "#d0b67d",
+          "#3a1544"
+        ],
+        "zari_rules": "Interlocking extra weft using fine silver and antique gold zari threads. Body features alternating weft insertions on a 2-ply pure silk ground. Border uses heavy metallic zari with tight warp tension to avoid sagging on the chevron pattern.",
+        "motif_geometry": "Symmetrical square grid jaal layout measuring 4x4 inches per repeat. Alternating cells contain silver rosettes, 3x3 small gold flowerets, and large stylized multi-petal golden medallions. Border consists of a continuous 6-inch horizontal chevron band flanked by thin rudraksh and geometric guard lines."
+      },
+      "scheduler_inputs": {
+        "title": "Deep Violet Geometric Grid Silk Saree with Dual Zari",
+        "seasonality_rationale": "Highly suited for the festive season (Varamahalakshmi and Diwali) due to the opulent dual-zari combination and deep royal purple base, which commands premium wedding-wear demand.",
+        "efficiency_rationale": "Utilizing a 15-day setup for a new Jacquard card allows cooperative looms to run high-volume batches (20-30 sarees per warp beam). Grouping 10 looms with identical violet warp setups minimizes beam-change down-time.",
+        "finance_rationale": "The dual-zari (gold and silver) motif detailing raises the perceived value of the saree, allowing cooperative societies to target mid-to-high tier retail price points, yielding a 35% higher margin compared to single-zari options."
+      }
+    }
+  },
+  "b24f482ca756d88251aada413a31cb027bdbfb5ff5721876182e174e81d00683": {
+    "image_url": "https://i.pinimg.com/736x/96/65/2c/96652cb716a27d40aa49c3cfb9f3dac5.jpg",
+    "cached_at": "2026-07-19T07:10:44.662Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,400 Warp with Double-Jacquard Border & Pallu",
+        "extracted_palette": [
+          "#C29910",
+          "#81097C",
+          "#E2B954",
+          "#B00E5A",
+          "#4C0345"
+        ],
+        "zari_rules": "Heavy gold zari weft insertion across the border and pallu. The body uses self-color thread jacquard weaving, while the border integrates premium tested gold zari in a traditional warp-assisted jacquard system with solid contrast junctions.",
+        "motif_geometry": "Body features an all-over small-scale self-jacquard floral leaf buta pattern. The borders contain layered horizontal panels featuring classical temple motifs, creeping vines, and chevron patterns. The pallu displays large-scale traditional paisley medallions and floral panels framed by solid gold zari bands."
+      },
+      "scheduler_inputs": {
+        "title": "Premium Mustard-Magenta Kanchipuram Brocade Saree",
+        "seasonality_rationale": "Perfectly aligns with peak South Indian festival demand (Varamahalakshmi, Gauri Ganesha, and Diwali) and the high-margin winter wedding season where traditional contrasting jewel-tones are favored.",
+        "efficiency_rationale": "By standardizing the magenta warp on the looms, multiple body colors (such as mustard, royal blue, or emerald green) can be woven on the same warp setup, reducing setup downtime and maximizing weavers' daily output across a 10-20 loom cluster.",
+        "finance_rationale": "High-density zari work commands premium pricing in the Handloom retail market. weavers can bypass intermediaries to secure up to 40% gross margins on this design, which is highly sought after by urban boutiques."
+      }
+    }
+  },
+  "a9ac10c6eb9084d3617968c3a9637b2c66abf4a8ed40a9c84c6d65a65881c212": {
+    "image_url": "https://i.pinimg.com/736x/67/3f/4a/673f4a36751941d2d09d6d021a8adc75.jpg",
+    "cached_at": "2026-07-19T07:11:08.225Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 92,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,400 Warp with Multi-Color Extra Weft Meenakari",
+        "extracted_palette": [
+          "#EA8A60",
+          "#18182D",
+          "#D1191E",
+          "#227D48",
+          "#098194"
+        ],
+        "zari_rules": "Base incorporates a fine metallic zari weft to create a shimmering peach tissue effect, while the primary floral and bird motifs are articulated using extra weft silk threads (meenakari) with precise contouring.",
+        "motif_geometry": "A traditional vertical Asavali or Tree of Life composition rising from a decorative vase (Kalash), featuring stylized peacock elements (Munya) integrated with floral creepers, rosettes, and pointed leaves in a symmetrical orientation."
+      },
+      "scheduler_inputs": {
+        "title": "Royal Paithani Fusion Saree with Asavali Motif",
+        "seasonality_rationale": "Perfect for the high-end wedding season and major festivals like Varamahalakshmi and Diwali, where luxurious tissue sarees with rich traditional motifs see maximum consumer pull.",
+        "efficiency_rationale": "Looms should be grouped on existing peach-gold warp beams to eliminate warp-tying downtime. Utilizing a 240-hook jacquard setup allows concurrent execution of these dense meenakari motifs across the cooperative's high-skill looms.",
+        "finance_rationale": "Though the jacquard card cutting incurs a 15-day lead time and higher upfront cost, this premium artisan category commands an excellent gross margin, easily offset by high wholesale price realization in the Handloom retail hubs."
+      }
+    }
+  },
+  "07a9b03a16eda2713fc2ae5ea2a82c5354c842b8a6e48eab4d64a853c0544531": {
+    "image_url": "https://i.pinimg.com/736x/20/b0/62/20b0621775de80d8c11824cece0c5c94.jpg",
+    "cached_at": "2026-07-19T07:11:13.062Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 1,
+        "complexity": "Level 3 - 1,600 Warp (Solid Body with Kaddi Border)",
+        "extracted_palette": [
+          "#F9F6EE",
+          "#8A1C14",
+          "#D4AF37",
+          "#C5A059",
+          "#FDFBF7"
+        ],
+        "zari_rules": "Pure gold zari applied to a 3-inch medium Kaddi border on both salvage ends, with dense zari orientation on the pallu featuring traditional parallel bands (Vari).",
+        "motif_geometry": "Plain solid cream body devoid of heavy motifs to maximize drape fluidity; border features clean geometric horizontal gold bands with no supplementary weft figuration."
+      },
+      "scheduler_inputs": {
+        "title": "Classic Cream-Gold Festive Saree",
+        "seasonality_rationale": "Perfectly aligned with regional festive demands such as Varamahalakshmi, Dussehra, and the pan-Indian wedding season where cream-and-gold is traditionally considered highly auspicious.",
+        "efficiency_rationale": "Utilizing a standardized off-white/cream warp across all 20 cooperative looms reduces setup time to a single day, maximizing weaver output by avoiding complex jacquard card changes on the body.",
+        "finance_rationale": "Optimizes production costs by keeping the body plain (reducing zari consumption per piece) while delivering a highly premium aesthetic that commands high retail markups."
+      }
+    }
+  },
+  "8d9eedde81497ddba619d1fef893bf5d05897df0202b687aca19ec7e674b2cbb": {
+    "image_url": "https://i.pinimg.com/736x/03/57/3a/03573a080dec38a5e36380788ca1a167.jpg",
+    "cached_at": "2026-07-19T07:12:08.797Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 92,
+        "setup_days": 15,
+        "complexity": "Level 4 - 1,800 Warp (Tissue-Silk Blend with Zari Border)",
+        "extracted_palette": [
+          "#C58B8E",
+          "#E2B4B2",
+          "#8E5B60",
+          "#D3C3B1",
+          "#B6AEAA"
+        ],
+        "zari_rules": "Half-fine silver-champagne zari integrated continuously in the border and selvedge, with subtle zari-infused weft inserts across the body to achieve a uniform rose-gold metallic shimmer.",
+        "motif_geometry": "Linear scalloped border featuring intricate, continuous floral vine motifs with no heavy motifs on the body to maximize the natural metallic tissue luster."
+      },
+      "scheduler_inputs": {
+        "title": "Metallic Tissue Rose-Gold Wedding Saree",
+        "seasonality_rationale": "Perfectly aligns with the upcoming wedding season and regional festivals like Varamahalakshmi, where contemporary pastel-metallic shades are highly sought after by younger demographics.",
+        "efficiency_rationale": "By keeping the body plain with a standardized mulberry silk warp and metallic weft, the 10-20 loom cooperative can maximize weaving speed. Only the border requires jacquard setup or post-loom embroidery, minimizing overall weaving bottleneck.",
+        "finance_rationale": "High-margin product due to the premium aesthetic of metallic tissue. Utilizing half-fine zari instead of pure silver zari optimizes raw material cost, generating an estimated 35% higher return for the cooperative society."
+      }
+    }
+  },
+  "bab9a62f6d9ea2dead21e94ad498841c184503d7dc0640ab0c01accbdc1609df": {
+    "image_url": "https://i.pinimg.com/736x/84/50/cc/8450ccc2a0dd7bd4fac962b05c4c247f.jpg",
+    "cached_at": "2026-07-19T07:12:29.060Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 4 - 1,800 Warp with Extra-Weft Buttas",
+        "extracted_palette": [
+          "#0f229e",
+          "#1b37c2",
+          "#d9c296",
+          "#bfa470",
+          "#070e45"
+        ],
+        "zari_rules": "High-density silver/light-gold zari on borders with interlocking weft; isolated floral buttas on the body using extra-weft technique.",
+        "motif_geometry": "Detailed floral creeper vine (Bel) pattern in the border bordered by small triangle/temple accents; body contains spaced teardrop floral buttas."
+      },
+      "scheduler_inputs": {
+        "title": "Royal Cobalt Silk Saree with Antique Zari Border",
+        "seasonality_rationale": "Aligned with the premium winter wedding season and festive celebrations like Diwali and Varamahalakshmi.",
+        "efficiency_rationale": "Optimized by sharing the 1800-warp beam configuration across 12 looms in the cooperative, reducing setup time for yarn tensioning.",
+        "finance_rationale": "Higher markup potential due to high-density zari appearance; semi-fine metallic thread reduces cost-of-goods-sold while maintaining premium aesthetics."
+      }
+    }
+  },
+  "43eb0af73d6ed37ff5368d737b7139443d70d69b6441b424106b7fef171b99ea": {
+    "image_url": "https://i.pinimg.com/736x/81/3d/cd/813dcdbf1afb7caa3dc5674b0bce5580.jpg",
+    "cached_at": "2026-07-19T07:12:46.532Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 94,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,800 Warp Ends (Double-height Jacquard)",
+        "extracted_palette": [
+          "#3b0d17",
+          "#c59e5f",
+          "#521523",
+          "#a37c3f",
+          "#2a0710"
+        ],
+        "zari_rules": "Intricate extra-weft antique gold zari. The border utilizes dense supplementary weft insertions creating a continuous diamond trellis and stylized chevron temple patterns. Body features fine parallel lines of repeating micro-floral motifs.",
+        "motif_geometry": "The body features closely spaced horizontal registers of tiny stylized floral medallions. The border features a sequence of nested diamond grids, followed by a continuous horizontal wave motif and a row of angular geometric leaf spires."
+      },
+      "scheduler_inputs": {
+        "title": "Premium Wine Silk with Antique Zari Borders",
+        "seasonality_rationale": "Perfectly matches the high-demand color palette for the winter wedding season and major festivals like Vaikuntha Ekadashi, where deep jewel tones command a high premium.",
+        "efficiency_rationale": "To optimize production, we recommend deploying this pattern across a cluster of 12 interconnected jacquard looms. Standardizing the warp setup allows for continuous weaving with minimal loom downtime.",
+        "finance_rationale": "The complex jacquard card punching cost is amortized effectively over a minimum production run of 120 pieces, maximizing the return on investment and securing high-margin wages for the weaver cooperative."
+      }
+    }
+  },
+  "f459c57cfb7ba9e1e0e9289357611335021bf3400e961ea63167a9e441b624fa": {
+    "image_url": "https://i.pinimg.com/736x/7a/55/b7/7a55b7d632d1ea05ebe0fd98e0cf42ec.jpg",
+    "cached_at": "2026-07-19T07:13:35.698Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,400 Warp",
+        "extracted_palette": [
+          "#4a0e17",
+          "#a6803c",
+          "#d2b46a",
+          "#2d050b",
+          "#e3dec3"
+        ],
+        "zari_rules": "Uses premium gold-tested zari. Body features continuous extra-weft floral creeper patterning. Border relies on heavy density geometric lift sequence with double-shuttle weft insertions to contrast honeycomb cells against the base maroon warp.",
+        "motif_geometry": "Body features a fluid, all-over curvilinear vine/foliage (Vanasingaram style) pattern. Border contains structured geometric horizontal bands: chevron/arrowhead patterns at the top, a prominent wide hexagonal honeycomb trellis filled with miniature floral centers, and a base trim of repeating circular medallions enclosing stylized kamalam motifs."
+      },
+      "scheduler_inputs": {
+        "title": "Premium Deep Maroon Brocade & Honeycomb Border Silk Saree",
+        "seasonality_rationale": "Perfectly aligned with peak South Indian wedding (Muhurtham) seasons and auspicious festivals like Varamahalakshmi, where heavy deep-toned bridal silks with traditional motifs are highly sought after.",
+        "efficiency_rationale": "Optimized for a 15-loom cooperative setup using synchronized dual-jacquard setups (2400 hook for body, separate border harness) to bypass manual korvai limitations, maintaining high daily yield metrics without compromising border structural crispness.",
+        "finance_rationale": "Though high-density zari work increases material costs by approximately 35% upfront, the finished product commands a premium retail markup of 60-70%, guaranteeing high working capital recovery for the cooperative."
+      }
+    }
+  },
+  "646fdd750f81a4d954d80e919f77c7184b338c0a59a8d1650d610fd969025c34": {
+    "image_url": "https://i.pinimg.com/736x/ed/d5/c6/edd5c6a56295c18b253f4a9c2c57dc5d.jpg",
+    "cached_at": "2026-07-19T07:15:23.735Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,400 Warp/Jacquard Hooks for Intricate Jaal and Kaddi Border",
+        "extracted_palette": [
+          "#4A0E4E",
+          "#DCAE96",
+          "#B5945B",
+          "#E8C5C8",
+          "#8F9779"
+        ],
+        "zari_rules": "Dense antique gold zari in border featuring peacock and floral vine panels. High-density gold zari-filled brocade on blouse sleeves. Delicate zardosi embroidery contouring the neckline.",
+        "motif_geometry": "Saree body features an all-over fluid floral jaal (vines, blossoms). Saree border displays a multi-tiered band structure: geometric diamond matrices, stylized peacock/bird motifs in rectangular panels, and scrolling floral vines."
+      },
+      "scheduler_inputs": {
+        "title": "High-Density Silk Brocade Saree with Peacock Border and Violet Accents",
+        "seasonality_rationale": "Highly suited for premium bridal wear and Varamahalakshmi festival markets where heavy kaddi-bordered silk sarees and contrasting blouses command a premium.",
+        "efficiency_rationale": "Grouping production on looms configured with 2400-hook Jacquards. Running the same light peach warp for body panels while swapping only the weft color or keeping the same run minimizes warp-tying downtime across the cooperative's active 10-loom setup.",
+        "finance_rationale": "The high density of zari in the borders and complex jaal work commands a high wholesale price, offsetting the initial 15-day card-punching cost when distributed across a minimum run of 50 pieces."
+      }
+    }
+  },
+  "4a602281c6fd353333060e72287b5e7ba09b88262377afa319741a9e97be41cc": {
+    "image_url": "https://i.pinimg.com/736x/7b/c2/a4/7bc2a4c933ceecf334fa907a28c95ac4.jpg",
+    "cached_at": "2026-07-19T07:15:52.069Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,400 Warp with Korvai Border",
+        "extracted_palette": [
+          "#580b1a",
+          "#c5a059",
+          "#ddb872",
+          "#3a020c",
+          "#e8d5b5"
+        ],
+        "zari_rules": "Pure or tested gold zari on the borders utilizing traditional jacquard cards. The body utilizes a tissue-like gold zari weft over a fine silk warp to achieve the high-gloss metallic sheen.",
+        "motif_geometry": "Extensive border featuring circular medallions with traditional stylized avian and floral motifs, framed by parallel geometric lines and chevron patterns."
+      },
+      "scheduler_inputs": {
+        "title": "Premium Metallic Gold and Deep Maroon Silk Saree",
+        "seasonality_rationale": "Highly suited for the festive season including Varamahalakshmi, Durga Puja, and the upcoming winter wedding peak due to its rich metallic shine and traditional maroon contrast.",
+        "efficiency_rationale": "To optimize production, weavers can load a single 15-day jacquard setup for the border across 10-15 looms, varying only the body weft colors or keeping them uniform for batch efficiency.",
+        "finance_rationale": "This high-margin tissue-style design yields excellent returns for cooperatives, offsetting the upfront jacquard card punch cost over a 100-saree production run."
+      }
+    }
+  },
+  "44f63b72ac4eb7dd242939735045163316e7a648eb69b54391f48a323fe59e27": {
+    "image_url": "https://i.pinimg.com/736x/e0/93/56/e09356936a6114d040eb7ca5cadc46e5.jpg",
+    "cached_at": "2026-07-19T07:18:02.578Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,400 Warp",
+        "extracted_palette": [
+          "#A30F08",
+          "#E19C2C",
+          "#F1CD6F",
+          "#750200",
+          "#DB461D"
+        ],
+        "zari_rules": "Gold zari extra-weft technique utilized to form the main structural border and the supplementary body buttas. The border has high-density zari coverage with a tight interlocking mechanism at the selvedge to prevent fraying.",
+        "motif_geometry": "Features large, ornate paisley (Kalka) motifs in the border alternating with floral medallions and scrolling creepers. The upper border is capped with a serrated triangular temple (Gopuram) style trim, while the crimson field is adorned with small, staggered floral buttas."
+      },
+      "scheduler_inputs": {
+        "title": "Crimson Gold Paisley Silk",
+        "seasonality_rationale": "Perfectly suited for the upcoming wedding and festival seasons, particularly Varamahalakshmi and Diwali, where red and gold combinations are considered highly auspicious and command peak demand.",
+        "efficiency_rationale": "Grouping this design across 12-15 looms in the Handloom cluster allows the crimson silk warp to be prepared in large batches, reducing the setup overhead and maximizing loom efficiency during peak production cycles.",
+        "finance_rationale": "High-density gold zari work increases the perceived value of the saree, allowing the cooperative to set a premium wholesale price that quickly absorbs the initial 15-day Jacquard card punching cost."
+      }
+    }
+  },
+  "055d9f4005f45a9ba328b620aad85b251f1ff754256ec7487c8d9219a0530884": {
+    "image_url": "https://i.pinimg.com/736x/16/ef/79/16ef7953da9cb3bc381326d9eba44d10.jpg",
+    "cached_at": "2026-07-19T07:18:55.094Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 4 - 3200 Warp Threads",
+        "extracted_palette": [
+          "#D5A73B",
+          "#C41E5E",
+          "#0F5227",
+          "#3B1454",
+          "#D01C24"
+        ],
+        "zari_rules": "Tested or half-fine gold zari in dense weft-faced patterns along the border. Body features alternating Annapakshi (peacock) and Rudraksham buttas woven on the checked grids using a secondary extra-weft shuttle mechanism.",
+        "motif_geometry": "Body pattern features a symmetrical micro-checked grid (Kattam) of approximately 1x1 cm squares. The border features multi-tiered horizontal bands containing diamond patterns (Vanki), coin lines (Mutthu), and traditional floral scrollwork framing peacock medallions."
+      },
+      "scheduler_inputs": {
+        "title": "Traditional Kattam Silk-Cotton Saree Production Run",
+        "seasonality_rationale": "These highly auspicious checked patterns with temple-style zari borders align with peak demand during the Varamahalakshmi, Navratri, and wedding seasons in Karnataka and Pan-India.",
+        "efficiency_rationale": "By grouping looms with a shared warp profile and altering only the weft dye batches, the cooperative can run 10-20 looms simultaneously, minimizing warp-tying times and optimizing weaving speed.",
+        "finance_rationale": "Using tested gold zari dramatically lowers raw material investment costs for the weavers' cooperative while preserving the high perceived value and retail premium of the ornate Kanchipuram style."
+      }
+    }
+  },
+  "8a3a74939bda0a38c9411daf2d255956a5a0baf93733f5c5b9ff02f8504a4c71": {
+    "image_url": "https://i.pinimg.com/736x/fe/67/ef/fe67efd5be51cba528c71da63afa7975.jpg",
+    "cached_at": "2026-07-19T07:20:34.220Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 5 - 480 Hook Jacquard",
+        "extracted_palette": [
+          "#081631",
+          "#cbbda3",
+          "#9c8d71",
+          "#1a2d52",
+          "#dfd4be"
+        ],
+        "zari_rules": "Extra-weft supplemental gold zari woven continuously across the border width. Utilizes a fine metallic zari thread interlocked with the midnight blue warp to create a highly detailed, embossed floral pattern.",
+        "motif_geometry": "The design features a multi-tiered border composition. The top tier consists of a series of stylized, upright leaf motifs (flame-like peepal leaves) arranged in a neat row. Below this, a wide central band displays an intricate, undulating floral creeper (latta) pattern with fully bloomed multi-petaled chrysanthemums and detailed leaf venation. The bottom tier completes the border with a repeating geometric floral band and diagonal leaf structures."
+      },
+      "scheduler_inputs": {
+        "title": "Midnight Blue Silk Blouse Fabric with Champagne Gold Floral Zari Border",
+        "seasonality_rationale": "Deep navy and midnight blue combined with bright champagne gold are highly favored during the winter wedding season and festive occasions like Navratri and Varamahalakshmi, making this a high-demand item for bridal blouse coordinates.",
+        "efficiency_rationale": "By standardizing the midnight blue warp across 15 looms in the cluster, weavers can run the main body quickly and allocate Jacquard resources exclusively to the complex border sections, optimizing daily meterage.",
+        "finance_rationale": "This premium design commands a 35% higher profit margin due to the density of the zari work in the border. Investing in the 15-day card-punching cycle for the 480-hook jacquard setup is offset by high-volume pre-orders from boutique bridal retailers."
+      }
+    }
+  },
+  "bdd1ad20dee59e17423159012d23342ce4127fd01292248a8b1af19d822084e5": {
+    "image_url": "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=300&q=80",
+    "cached_at": "2026-07-19T07:25:19.593Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 65,
+        "setup_days": 1,
+        "complexity": "Level 2 - Dobby 8-Harness / 1200 Warp",
+        "extracted_palette": [
+          "#3b6290",
+          "#709fc5",
+          "#e5ebf1",
+          "#1d2e43",
+          "#2c2f35"
+        ],
+        "zari_rules": "Zero-zari implementation; contemporary matte look using fine mercerized cotton and linen yarns for the windowpane grid lines.",
+        "motif_geometry": "Windowpane check (Kattam) pattern consisting of thin intersecting lines spaced at 2-inch intervals on a mottled melange blue base structure."
+      },
+      "scheduler_inputs": {
+        "title": "Contemporary Windowpane Cotton-Linen Suiting",
+        "seasonality_rationale": "Aligns with the post-monsoon transition and early winter corporate casualwear demands in Handloom's tech hubs.",
+        "efficiency_rationale": "Simple 4-to-8 shaft loom setup allows rapid deployment across standard cooperative weavers without requiring new Jacquard cards, maximizing yardage throughput.",
+        "finance_rationale": "High yield-per-beam ratio (60-meter runs) with minimal raw material inventory overheads ensures fast turnaround times and solid cash flow for cooperative weavers."
+      }
+    }
+  },
+  "d6b8c17c09e0b0573ae4db79856e2ada67d093c335fb417c1af1364735bd3d9e": {
+    "image_url": "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=300&q=80",
+    "cached_at": "2026-07-19T07:25:32.120Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 55,
+        "setup_days": 15,
+        "complexity": "Level 3 - 1,600 Warp, Dobby Stripe and Butta",
+        "extracted_palette": [
+          "#8E4A38Precise RGB color codes parsed from display garments: Rust Red, Golden Mustard, Charcoal Black, Soft Lavender, and Deep Olive.",
+          "#E3A82B",
+          "#242528",
+          "#C5C4D4",
+          "#5E644D"
+        ],
+        "zari_rules": "Minimal dull antique silver zari detailing along the selvedge and palla stripes, matching the muted, non-lustrous finish of the contemporary apparel.",
+        "motif_geometry": "Interlocking vertical lines (kaddi stripes) paired with micro-floral bootis (buttas) styled as geometric blocks, echoing the dual striped and patterned garments on the racks."
+      },
+      "scheduler_inputs": {
+        "title": "Modern Fusion Wear Silk-Cotton Dobby Yardage",
+        "seasonality_rationale": "The earthy tones (mustard, olive, rust) align perfectly with the pre-autumn transitional fashion demand and boutique apparel collections in metro hubs.",
+        "efficiency_rationale": "Utilizes a shared 1,600 warp setup across 12 looms in the cooperative. Stripe variations are handled strictly via weft-shuttle manipulation, requiring zero downtime for warp changes.",
+        "finance_rationale": "Low zari density minimizes raw material cash outlay. Fast loom turnaround (5 meters/day per loom) yields high liquid cash flow for the cooperative society within a 30-day billing cycle."
+      }
+    }
+  },
+  "e8a43acb4c7b745630b9b101238168d94146fd4f8ecb0fe3aba280403691be15": {
+    "image_url": "https://i.pinimg.com/736x/81/40/7c/81407ca0dfd25b222264ae5f719da41a.jpg",
+    "cached_at": "2026-07-19T08:37:04.279Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,400 Warp, Double-Weft Jacquard",
+        "extracted_palette": [
+          "#E22D70",
+          "#E5C185",
+          "#800020",
+          "#E9967A",
+          "#DEB887"
+        ],
+        "zari_rules": "High-density gold zari used as supplementary weft to form an intricate all-over floral jaal across the body, transitioning into a solid, highly polished compact zari weave in the border and pallu with fine meenakari color accents.",
+        "motif_geometry": "Interlocking floral vine jaal (jangla pattern) containing stylized rosettes and delicate leaf motifs throughout the body, bounded by a wide zari border featuring stylized repeating paisleys and geometric micro-borders."
+      },
+      "scheduler_inputs": {
+        "title": "Premium Rani Pink Banarasi Silk Jangla Saree",
+        "seasonality_rationale": "Perfectly suited for prime wedding (Muhurtham) seasons and major national festivals like Diwali and Varamahalakshmi, where high-end bridal silks command maximum demand.",
+        "efficiency_rationale": "Due to the extreme complexity of the jacquard cards, setting up a cluster of 10 looms with the identical Rani Pink silk warp maximizes yarn efficiency and reduces downtime associated with warp beam-tying.",
+        "finance_rationale": "High capital commitment for zari and silk yarn is offset by premium retail margins. This product acts as a flagship revenue driver for cooperative societies targeting high-end bridal boutiques."
+      }
+    }
+  },
+  "0c8defd05a77b691345d412cddde2fcbeb8dee270e27b87af0517c83f65ed7dc": {
+    "image_url": "https://i.pinimg.com/736x/0c/12/3d/0c123df8f66cdc067c505ccd7cf4e298.jpg",
+    "cached_at": "2026-07-19T08:37:17.432Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 5 - 2,400 Warp (Heavy Jacquard with Kattam Border)",
+        "extracted_palette": [
+          "#8A1C14",
+          "#C71585",
+          "#4B0082",
+          "#005F73",
+          "#D4AF37"
+        ],
+        "zari_rules": "Gold zari extensively used in weft insert for borders (Kettu border) and body motifs (Kattam). Warp is pure mulberry silk; weft employs 3-ply zari yarn for heavy lustre.",
+        "motif_geometry": "Square-grid layout (Kattam) of 3cm x 3cm enclosing highly detailed stylized elephant (Yaanai) and peacock (Mayil) jacquard motifs. Borders feature parallel stripes and a thick band of floral creeper (Kodi Visiri) patterns."
+      },
+      "scheduler_inputs": {
+        "title": "Traditional Kanchipuram Silk Saree Collection with Kattam Grid and Korvai Borders",
+        "seasonality_rationale": "Highly aligned with the upcoming festive season (Varamahalakshmi, Diwali) and South Indian wedding seasons where heavy Kanjivaram silk sarees are high-demand heirloom items.",
+        "efficiency_rationale": "Grouping production of these sarees on a single warp setup (same warp density and draft) while only changing weft colors and jacquard cards optimizes loom idle time across a 10-20 cooperative loom configuration.",
+        "finance_rationale": "High-premium retail value offsets the initial 15-day card-cutting setup cost. Standardizing the border warp minimizes raw material transition costs and maximizes weaver output velocity."
+      }
+    }
+  },
+  "9855eeb143ca812aff168152567c94349ac77464474536a7c71fc89e9c17a434": {
+    "image_url": "https://i.pinimg.com/736x/8e/e0/15/8ee0159fb63bcf98e50951e029ffdbf7.jpg",
+    "cached_at": "2026-07-19T08:37:52.697Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 4 - 4,800 Warp / Double Warp Korvai",
+        "extracted_palette": [
+          "#42125A",
+          "#C11370",
+          "#D6A642",
+          "#9B742A",
+          "#5B2B73"
+        ],
+        "zari_rules": "Heavy gold zari utilized in a solid Kaddi format for the main border, embellished with circular medallion inserts. Body features spaced zari buttis, and the border-body transition uses a series of rising ornamental shrubs (Thazhampoo) rendered in dense gold zari.",
+        "motif_geometry": "Body features stylized 'Peepal Leaf' or 'Tree of Life' buttis. The border contains continuous bands of repeating circular 'Chakra' or floral medallions, framed by horizontal 'Vanki' (chevron/zigzag) bands and topped with elegant, upward-pointing triangular shrub motifs."
+      },
+      "scheduler_inputs": {
+        "title": "Royal Violet and Magenta Kanchipuram Silk Saree with Tree of Life Buttas",
+        "seasonality_rationale": "Perfectly suited for the South Indian wedding season (Muhurtham) and major festive celebrations like Diwali and Varamahalakshmi, where royal purple and magenta are highly coveted.",
+        "efficiency_rationale": "Using a shared 3-ply warp setup across 12 looms allows rapid production of the body, while the Korvai border joint can be optimized with dedicated side-shuttle weavers to maintain a consistent output rate of 1 saree per 6 days per loom.",
+        "finance_rationale": "High-margin bridal/festive wear item utilizing genuine Zari and premium mulberry silk, justifying the intensive labor cost of the Korvai technique and yielding an estimated 35-40% gross margin for the cooperative."
+      }
+    }
+  },
+  "41f29be3255704752621179e4e8c6ee7529930e3065223de8d93e91462358432": {
+    "image_url": "https://i.pinimg.com/736x/17/a0/ac/17a0ac72831a8587cc972394fc5d60f3.jpg",
+    "cached_at": "2026-07-19T19:17:12.149Z",
+    "analysis": {
+      "design_analysis": {
+        "confidence_match": 95,
+        "setup_days": 15,
+        "complexity": "Level 4 - 1,600 Warp Silk-Cotton with Dobby Borders",
+        "extracted_palette": [
+          "#D9822B",
+          "#3E1B63",
+          "#131E7A",
+          "#A3102C",
+          "#094225"
+        ],
+        "zari_rules": "Gold zari integrated into the warp borders using standard dobby mechanism, with micro-zari stripes forming checks in the body weft.",
+        "motif_geometry": "Fine self-checks (Kattam) on the body, combined with parallel horizontal border bands containing micro-diamond, rudraksha, and geometric chevron motifs."
+      },
+      "scheduler_inputs": {
+        "title": "Coimbatore Traditional Silk-Cotton Kattam Saree Collection",
+        "seasonality_rationale": "Perfectly suited for early festive seasons like Varamahalakshmi and Ganesh Chaturthi, where consumers demand the rich appearance of silk combined with the comfort and breathability of cotton.",
+        "efficiency_rationale": "By standardizing the 80s cotton warp across all 15 looms in the cluster, weavers only need to rotate the colored silk weft yarns, minimizing setup time and maximizing daily production speed.",
+        "finance_rationale": "This blend significantly reduces pure silk material costs, enabling cooperative societies to offer highly competitive retail prices while securing a 35% margin on handloom authenticity."
+      }
+    }
+  }
+}

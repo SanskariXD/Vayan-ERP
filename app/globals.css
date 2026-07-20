@@ -1,0 +1,407 @@
+/* ============================================================
+   AntiGravity — Heritage Craft Design System
+   Tailwind v4 CSS-First Configuration
+   ============================================================ */
+
+/* Google Fonts — must precede all other imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@import "tailwindcss";
+
+/* ---- CSS Custom Properties (Design Tokens) ---- */
+:root {
+  /* Brand Palette */
+  --color-khadi-cream: #F9F6F0;
+  --color-deep-indigo: #1E2A38;
+  --color-madder-red: #7A2021;
+  --color-leaf-green: #2E6F40;
+  --color-terracotta: #D97706;
+  --color-white: #FFFFFF;
+
+  /* Semantic Colors */
+  --color-background: var(--color-khadi-cream);
+  --color-surface: var(--color-white);
+  --color-border: #E7E5E4; /* stone-200 */
+  --color-border-strong: #D6D3D1; /* stone-300 */
+  --color-text-primary: var(--color-deep-indigo);
+  --color-text-secondary: #57534E; /* stone-600 */
+  --color-text-muted: #78716C; /* stone-500 */
+
+  /* Status Colors */
+  --color-status-weaving-bg: #2E6F401A;
+  --color-status-weaving-text: #2E6F40;
+  --color-status-setup-bg: #D977061A;
+  --color-status-setup-text: #D97706;
+  --color-status-idle-bg: #E7E5E4;
+  --color-status-idle-text: #57534E;
+  --color-status-maintenance-bg: #1E2A381A;
+  --color-status-maintenance-text: #1E2A38;
+
+  /* Typography */
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+
+  /* Spacing & Layout */
+  --sidebar-width: 240px;
+  --border-radius: 8px;
+  --border-radius-sm: 4px;
+  --border-radius-lg: 12px;
+}
+
+/* ---- Base Resets ---- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-khadi-cream);
+  color: var(--color-deep-indigo);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ---- Custom Scrollbar ---- */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-border);
+}
+::-webkit-scrollbar-thumb {
+  background: #A8A29E; /* stone-400 */
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-madder-red);
+}
+
+/* ---- Text Selection ---- */
+::selection {
+  background-color: #7A202130;
+  color: var(--color-madder-red);
+}
+
+/* ---- Typography Utilities ---- */
+.font-mono-nums {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* ---- Animation Keyframes ---- */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseAlert {
+  0%, 100% {
+    box-shadow: 0 0 0 0 #D9770640;
+    border-color: #D97706;
+  }
+  50% {
+    box-shadow: 0 0 0 8px #D9770600;
+    border-color: #B45309;
+  }
+}
+
+@keyframes pulseRed {
+  0%, 100% {
+    box-shadow: 0 0 0 0 #7A202140;
+    border-color: #7A2021;
+  }
+  50% {
+    box-shadow: 0 0 0 8px #7A202100;
+    border-color: #5C1719;
+  }
+}
+
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+/* ---- Animation Classes ---- */
+.animate-fade-in {
+  animation: fadeIn 0.4s ease forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slide-up-delay-1 {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.animate-slide-up-delay-2 {
+  animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+}
+
+.animate-pulse-alert {
+  animation: pulseAlert 2s ease-in-out infinite;
+}
+
+.animate-pulse-red {
+  animation: pulseRed 2s ease-in-out infinite;
+}
+
+.animate-count {
+  animation: countUp 0.3s ease forwards;
+}
+
+/* ---- Loading Skeleton ---- */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #F0ECE5 25%,
+    #E8E4DD 50%,
+    #F0ECE5 75%
+  );
+  background-size: 400px 100%;
+  animation: shimmer 1.4s ease infinite;
+  border-radius: var(--border-radius-sm);
+}
+
+/* ---- Stripe Pattern (WARP_SETUP blocks) ---- */
+.stripe-terracotta {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #D9770620,
+    #D9770620 4px,
+    #D97706 4px,
+    #D97706 8px
+  );
+}
+
+/* ---- Print Styles (Production Ticket) ---- */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #production-ticket,
+  #production-ticket * {
+    visibility: visible;
+  }
+  #production-ticket {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+/* ---- Loom Card Alert Border ---- */
+.loom-card-alert {
+  border-color: #D97706 !important;
+  animation: pulseAlert 2.5s ease-in-out infinite;
+}
+
+/* ---- Warp Countdown Alert ---- */
+.warp-countdown-alert {
+  animation: pulseRed 2s ease-in-out infinite;
+}
+
+/* ---- Interactive Elements ---- */
+.btn-primary {
+  background-color: var(--color-deep-indigo);
+  color: white;
+  border: none;
+  padding: 0.5rem 1.25rem;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-madder-red);
+  transform: translateY(-1px);
+}
+
+.btn-alert {
+  background-color: #D977061A;
+  color: var(--color-terracotta);
+  border: 1px solid #D9770650;
+  padding: 0.375rem 1rem;
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  letter-spacing: 0.02em;
+}
+
+.btn-alert:hover {
+  background-color: var(--color-terracotta);
+  color: white;
+}
+
+/* ---- Card Surfaces ---- */
+.card-surface {
+  background-color: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+}
+
+/* ---- Sidebar ---- */
+.sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--color-white);
+  border-right: 1px solid var(--color-border);
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.625rem 1rem;
+  border-radius: var(--border-radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: all 0.15s ease;
+  margin: 0 0.5rem;
+}
+
+.sidebar-nav-item:hover {
+  background-color: var(--color-khadi-cream);
+  color: var(--color-deep-indigo);
+}
+
+.sidebar-nav-item.active {
+  background-color: #1E2A3810;
+  color: var(--color-deep-indigo);
+  font-weight: 600;
+}
+
+/* ---- Progress Bar ---- */
+.progress-bar-track {
+  background-color: var(--color-border);
+  border-radius: 99px;
+  height: 6px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  background-color: var(--color-leaf-green);
+  transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.progress-bar-fill.alert {
+  background-color: var(--color-terracotta);
+}
+
+/* ---- Dot Progress ---- */
+.saree-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--color-border-strong);
+  background-color: transparent;
+  transition: all 0.3s ease;
+}
+
+.saree-dot.completed {
+  background-color: var(--color-leaf-green);
+  border-color: var(--color-leaf-green);
+}
+
+.saree-dot.current {
+  border-color: var(--color-terracotta);
+  box-shadow: 0 0 0 3px #D9770630;
+  animation: pulseAlert 1.5s ease-in-out infinite;
+}
+
+/* ---- Timeline ---- */
+.timeline-container {
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.timeline-block {
+  height: 32px;
+  border-radius: var(--border-radius-sm);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+  transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.timeline-block:hover {
+  filter: brightness(0.9);
+  transform: translateY(-50%) scaleY(1.05);
+  z-index: 10;
+}
+
+.timeline-block.weaving {
+  background-color: var(--color-leaf-green);
+  color: white;
+}
+
+.timeline-block.warp-setup {
+  background-image: repeating-linear-gradient(
+    45deg,
+    #D9770640,
+    #D9770640 4px,
+    #D97706 4px,
+    #D97706 8px
+  );
+  color: var(--color-deep-indigo);
+  border: 1px solid var(--color-terracotta);
+}

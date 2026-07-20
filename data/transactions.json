@@ -1,0 +1,57 @@
+[
+  {
+    "id": "tx-001",
+    "date": "2026-07-15",
+    "type": "Income",
+    "category": "Customer Payment",
+    "amount": 150000,
+    "status": "PAID",
+    "description": "Payment from Nalli Silks for Batch 12"
+  },
+  {
+    "id": "tx-002",
+    "date": "2026-07-14",
+    "type": "Expense",
+    "category": "Material Purchase",
+    "amount": 45000,
+    "status": "PAID",
+    "description": "Silk Yarn restock"
+  },
+  {
+    "id": "tx-003",
+    "date": "2026-07-10",
+    "type": "Expense",
+    "category": "Salary",
+    "amount": 120000,
+    "status": "PAID",
+    "description": "Advance wage payout"
+  },
+  {
+    "id": "tx-004",
+    "date": "2026-07-08",
+    "type": "Expense",
+    "category": "Electricity",
+    "amount": 8000,
+    "status": "PAID",
+    "description": "Society electricity bill"
+  },
+  {
+    "id": "tx-005",
+    "date": "2026-07-05",
+    "type": "Income",
+    "category": "Customer Payment",
+    "amount": 85000,
+    "status": "PAID",
+    "description": "Payment from Delhi Ethnic Wear"
+  },
+  {
+    "id": "tx-006",
+    "date": "2026-07-12",
+    "type": "Income",
+    "category": "Sales Revenue",
+    "amount": 48000,
+    "status": "PENDING",
+    "dueDate": "2026-08-27",
+    "description": "Pending payment for Custom Order #3 (45 Days)"
+  }
+]

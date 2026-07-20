@@ -1,0 +1,46 @@
+[
+  {
+    "id": "order-001",
+    "customerId": "cust-01",
+    "designId": "design-001",
+    "quantity": 24,
+    "deliveryDate": "2026-08-15",
+    "status": "In Progress",
+    "priority": "High",
+    "region": "Chennai",
+    "expectedRevenue": 528000
+  },
+  {
+    "id": "order-002",
+    "customerId": "cust-02",
+    "designId": "design-002",
+    "quantity": 12,
+    "deliveryDate": "2026-08-30",
+    "status": "In Progress",
+    "priority": "Medium",
+    "region": "Delhi",
+    "expectedRevenue": 216000
+  },
+  {
+    "id": "order-003",
+    "customerId": "cust-03",
+    "designId": "design-005",
+    "quantity": 36,
+    "deliveryDate": "2026-09-10",
+    "status": "Pending",
+    "priority": "High",
+    "region": "Bangalore",
+    "expectedRevenue": 900000
+  },
+  {
+    "id": "order-004",
+    "customerId": "cust-04",
+    "designId": "design-004",
+    "quantity": 50,
+    "deliveryDate": "2026-09-20",
+    "status": "Pending",
+    "priority": "Low",
+    "region": "Mumbai",
+    "expectedRevenue": 300000
+  }
+]
