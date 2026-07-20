@@ -97,6 +97,10 @@ export const useSimulationStore = create<SimulationStore>((set, get) => {
 
     addMaterial: (mat: any) => {
       engine.addMaterial(mat);
+    },
+
+    incrementSareeCount: (loomId: string) => {
+      engine.incrementSareeCount(loomId);
     }
   };
 });
@@ -167,9 +171,6 @@ export const useCoopStore = (selector: (state: any) => any) => {
       engine.addMaterial(mat);
     },
 
-    incrementSareeCount: (loomId: string) => {
-      engine.incrementSareeCount(loomId);
-    },
     incrementSareeCount: (loomId: string) => {
       engine.incrementSareeCount(loomId);
     },
