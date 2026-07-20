@@ -7,6 +7,7 @@ export default function OnboardingGateway() {
   return (
     <main
       style={{
+        position: 'relative',
         minHeight: '100vh',
         backgroundColor: '#F9F6F0',
         display: 'flex',
@@ -15,12 +16,24 @@ export default function OnboardingGateway() {
         justifyContent: 'center',
         padding: '2rem',
         gap: '2rem',
+        overflow: 'hidden',
       }}
     >
+      <div 
+        style={{
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: 'url(/main-bg.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          opacity: 0.35,
+          zIndex: 0
+        }}
+      />
       {/* Header */}
       <div
         className="animate-slide-up"
-        style={{ textAlign: 'center', marginBottom: '1rem' }}
+        style={{ textAlign: 'center', marginBottom: '1rem', position: 'relative', zIndex: 1 }}
       >
         <div
           style={{
@@ -84,6 +97,8 @@ export default function OnboardingGateway() {
           justifyContent: 'center',
           width: '100%',
           maxWidth: '800px',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
         <RoleCard
@@ -121,6 +136,8 @@ export default function OnboardingGateway() {
           color: '#A8A29E',
           letterSpacing: '0.04em',
           marginTop: '2rem',
+          position: 'relative',
+          zIndex: 1,
         }}
       >
         Vayan ERP v1.0
