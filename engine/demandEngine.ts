@@ -11,8 +11,20 @@ export function runDemandEngine(currentDate: string, festivals: any[], orders: a
   for (const fest of festivals) {
     const daysUntil = diffDays(fest.date, currentDate);
     
-    // Demand increases before the festival during the preparation lead time
-    if (daysUntil > 0 && daysUntil <= fest.preparationLeadTime) {
+    // 60-day Jacquard timeline logic for Weddings
+    if (fest.festival.includes('Wedding') && daysUntil > 45 && daysUntil <= 60) {
+      const weight = 80; // Spike demand
+      if (weight > festivalWeight) {
+        festivalWeight = weight;
+        activeFestival = fest.festival;
+        peakSeason = true;
+        drivers.push({
+          label: `60-Day Wedding Prep: ${fest.festival}`,
+          icon: '🚨',
+          strength: 'high'
+        });
+      }
+    } else if (daysUntil > 0 && daysUntil <= fest.preparationLeadTime) {
       // The closer it gets, the higher the weight, peaking at lead time / 2
       const urgency = 1 - (daysUntil / fest.preparationLeadTime);
       const weight = (fest.demandMultiplier * 30) * urgency;
@@ -52,7 +64,20 @@ export function runDemandEngine(currentDate: string, festivals: any[], orders: a
   const trendScore = Math.abs(hash % 15);
   
   // Calculate base score
-  const rawScore = historicalDemandScore + festivalWeight + orderWeight + trendScore;
+  let rawScore = historicalDemandScore + festivalWeight + orderWeight + trendScore;
+  
+  // Ashada Month Penalty (roughly July)
+  const currentMonth = new Date(currentDate).getMonth();
+  let isAshada = false;
+  if (currentMonth === 6) { // 6 = July (0-indexed)
+     rawScore *= 0.1;
+     isAshada = true;
+     drivers.push({
+        label: `Ashada Month Penalty`,
+        icon: '⚠️',
+        strength: 'low'
+     });
+  }
   
   // 4. Capacity Check
   const currentCapacity = looms.reduce((sum: number, loom: any) => {
@@ -67,7 +92,9 @@ export function runDemandEngine(currentDate: string, festivals: any[], orders: a
   const demandLevel = getDemandLevel(normalizedScore);
 
   let reason = '';
-  if (capacityDeficit === 0) {
+  if (isAshada) {
+    reason = `Ashada month active. Demand for silk is artificially suppressed (10% capacity applied).`;
+  } else if (capacityDeficit === 0) {
     reason = `Current production capacity (${currentCapacity} sarees) is sufficient to handle demand.`;
   } else if (peakSeason) {
     reason = `${activeFestival} is approaching. Capacity deficit of ${Math.round(capacityDeficit)}. Immediate production recommended.`;

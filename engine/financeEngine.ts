@@ -20,34 +20,53 @@ export function runFinanceEngine(
   if (accrueWages) {
     for (const completed of completedSarees) {
       const design = designs.find(d => d.id === completed.designId);
+      const loom = looms.find(l => l.id === completed.loomId);
+      const isKHDC = loom?.productionModel === 'KHDC_GOVT';
+
       if (design) {
-        dailyRevenue += design.expectedSellingPrice;
-        
-        updatedTransactions.unshift({
-          id: `tx-sale-${Date.now()}-${Math.random()}`,
-          date: currentDate,
-          type: 'Income',
-          category: 'Sales Revenue',
-          amount: design.expectedSellingPrice,
-          status: 'PENDING',
-          dueDate: advanceDate(currentDate, 45), // 45-day payment terms
-          description: `Sale of 1 ${design.name} (Loom ${completed.loomId.toUpperCase()}) - Net 45 Terms`
-        });
+        if (isKHDC) {
+          const wageIncome = (design.expectedWeavingDays || 5) * DAILY_WAGE;
+          dailyRevenue += wageIncome;
+          
+          updatedTransactions.unshift({
+            id: `tx-khdc-${Date.now()}-${Math.random()}`,
+            date: currentDate,
+            type: 'Income',
+            category: 'KHDC Commission',
+            amount: wageIncome,
+            status: 'PAID',
+            description: `KHDC Wage Commission for 1 ${design.name} (Loom ${completed.loomId.toUpperCase()})`
+          });
+          // No material cost since KHDC provides raw materials
+        } else {
+          dailyRevenue += design.expectedSellingPrice;
+          
+          updatedTransactions.unshift({
+            id: `tx-sale-${Date.now()}-${Math.random()}`,
+            date: currentDate,
+            type: 'Income',
+            category: 'Sales Revenue',
+            amount: design.expectedSellingPrice,
+            status: 'PENDING',
+            dueDate: advanceDate(currentDate, 45), // 45-day payment terms
+            description: `Sale of 1 ${design.name} (Loom ${completed.loomId.toUpperCase()}) - Net 45 Terms`
+          });
 
-        // Rough material cost approximation for the simulation
-        const materialCost = (design.silkRequired * 4000) + (design.zariRequired * 8000);
-        dailyMaterialCost += materialCost;
+          // Rough material cost approximation for the simulation
+          const materialCost = (design.silkRequired * 4000) + (design.zariRequired * 8000);
+          dailyMaterialCost += materialCost;
 
-        // Material expense is PAID immediately (Cash leaves the business)
-        updatedTransactions.unshift({
-          id: `tx-mat-${Date.now()}-${Math.random()}`,
-          date: currentDate,
-          type: 'Expense',
-          category: 'Material Expense',
-          amount: materialCost,
-          status: 'PAID',
-          description: `Material consumed for ${design.name}`
-        });
+          // Material expense is PAID immediately (Cash leaves the business)
+          updatedTransactions.unshift({
+            id: `tx-mat-${Date.now()}-${Math.random()}`,
+            date: currentDate,
+            type: 'Expense',
+            category: 'Material Expense',
+            amount: materialCost,
+            status: 'PAID',
+            description: `Material consumed for ${design.name}`
+          });
+        }
       }
     }
   }

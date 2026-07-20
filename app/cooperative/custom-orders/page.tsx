@@ -19,7 +19,8 @@ export default function CustomOrdersPage() {
     sellingPrice: 15000,
     advanceAmount: 5000,
     instructions: '',
-    region: 'Local'
+    region: 'Local',
+    productionModel: 'PRIVATE_COMMERCIAL'
   });
 
   useEffect(() => {
@@ -45,6 +46,7 @@ export default function CustomOrdersPage() {
       status: 'Pending',
       priority: formData.priority,
       region: formData.region,
+      productionModel: formData.productionModel,
       expectedRevenue: formData.quantity * formData.sellingPrice
     };
 
@@ -164,6 +166,27 @@ export default function CustomOrdersPage() {
                    <div className="text-sm font-semibold text-slate-700">Upload Reference Image</div>
                    <div className="text-[10px] text-stone-400 mt-1">System will automatically extract motifs and complexity.</div>
                 </div>
+
+                <div>
+                   <label className="block text-xs font-semibold text-stone-500 uppercase mb-2">Production Model</label>
+                   <div className="flex bg-slate-100 p-1 rounded-lg">
+                      <button 
+                         type="button"
+                         onClick={() => setFormData({...formData, productionModel: 'PRIVATE_COMMERCIAL'})}
+                         className={`flex-1 text-xs font-semibold py-2 rounded-md transition ${formData.productionModel === 'PRIVATE_COMMERCIAL' ? 'bg-white shadow text-slate-800' : 'text-slate-500 hover:text-slate-700'}`}
+                      >
+                         Private Sale (Full Margin)
+                      </button>
+                      <button 
+                         type="button"
+                         onClick={() => setFormData({...formData, productionModel: 'KHDC_GOVT'})}
+                         className={`flex-1 text-xs font-semibold py-2 rounded-md transition ${formData.productionModel === 'KHDC_GOVT' ? 'bg-indigo-600 shadow text-white' : 'text-slate-500 hover:text-slate-700'}`}
+                      >
+                         KHDC Commission (Wage)
+                      </button>
+                   </div>
+                </div>
+
                 <div className="grid grid-cols-2 gap-4">
                    <div>
                       <label className="block text-xs font-semibold text-stone-500 uppercase mb-1">Quantity (Sarees)</label>

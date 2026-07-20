@@ -131,9 +131,9 @@ export default function DemandIntelligencePage() {
                            <CheckCircle2 className="w-4 h-4 text-indigo-500 mt-0.5 shrink-0" />
                            Convert Loom-05 after current batch
                         </li>
-                        <li className="flex items-start gap-2">
-                           <CheckCircle2 className="w-4 h-4 text-indigo-500 mt-0.5 shrink-0" />
-                           Delay low-margin cotton production
+                        <li className="flex items-start gap-2 text-rose-600">
+                           <AlertTriangle className="w-4 h-4 text-rose-500 mt-0.5 shrink-0" />
+                           Strict 60-Day Jacquard Lead Time for Wedding designs
                         </li>
                      </ul>
 
@@ -169,6 +169,11 @@ export default function DemandIntelligencePage() {
                       <div key={design.id} className="border border-slate-100 rounded-xl hover:border-indigo-100 hover:shadow-md transition bg-slate-50/50 overflow-hidden flex flex-col justify-between">
                          {design.imageUrl && (
                             <div className="relative h-28 w-full overflow-hidden border-b border-slate-100 shrink-0">
+                               {design.globalTrendMatch && (
+                                  <div className="absolute top-2 left-2 z-10 bg-slate-900/90 backdrop-blur text-white text-[10px] font-bold px-2 py-1 rounded-md shadow-lg border border-slate-700 flex items-center gap-1.5">
+                                     <span>🌍</span> {design.globalTrendMatch}
+                                  </div>
+                               )}
                                <img 
                                   src={design.imageUrl} 
                                   alt={design.name}

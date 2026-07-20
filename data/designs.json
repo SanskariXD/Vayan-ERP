@@ -12,7 +12,8 @@
     "expectedWeavingDays": 6,
     "expectedDemandScore": 95,
     "category": "Wedding",
-    "imageUrl": "https://i.pinimg.com/736x/0c/12/3d/0c123df8f66cdc067c505ccd7cf4e298.jpg"
+    "imageUrl": "https://i.pinimg.com/736x/0c/12/3d/0c123df8f66cdc067c505ccd7cf4e298.jpg",
+    "globalTrendMatch": "Pantone 2026 Peach Echo"
   },
   {
     "id": "design-002",
@@ -27,7 +28,8 @@
     "expectedWeavingDays": 5,
     "expectedDemandScore": 88,
     "category": "Festival",
-    "imageUrl": "https://i.pinimg.com/736x/91/ea/b4/91eab40ac97f4e79c0ac5c1318fd84e3.jpg"
+    "imageUrl": "https://i.pinimg.com/736x/91/ea/b4/91eab40ac97f4e79c0ac5c1318fd84e3.jpg",
+    "globalTrendMatch": "Minimalist Gold Zari"
   },
   {
     "id": "design-003",
@@ -42,7 +44,8 @@
     "expectedWeavingDays": 7,
     "expectedDemandScore": 92,
     "category": "Wedding",
-    "imageUrl": "https://i.pinimg.com/736x/48/96/c0/4896c08390f39059e751f0237bf0f6b4.jpg"
+    "imageUrl": "https://i.pinimg.com/736x/48/96/c0/4896c08390f39059e751f0237bf0f6b4.jpg",
+    "globalTrendMatch": "Royal Magenta 2026"
   },
   {
     "id": "design-004",
@@ -57,7 +60,8 @@
     "expectedWeavingDays": 6,
     "expectedDemandScore": 89,
     "category": "Luxury",
-    "imageUrl": "https://i.pinimg.com/736x/61/dc/2d/61dc2d9e01f50ed75912c67143cd9b64.jpg"
+    "imageUrl": "https://i.pinimg.com/736x/61/dc/2d/61dc2d9e01f50ed75912c67143cd9b64.jpg",
+    "globalTrendMatch": "Heritage Peacock Motif"
   },
   {
     "id": "design-005",

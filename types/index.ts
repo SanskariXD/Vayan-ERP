@@ -3,7 +3,7 @@
 // Core TypeScript Type Definitions
 // ============================================================
 
-export type LoomStatus = 'IDLE' | 'WARP_SETUP' | 'WEAVING' | 'MAINTENANCE' | 'STOPPED' | 'WAITING_FOR_MATERIALS';
+export type LoomStatus = 'IDLE' | 'WARP_SETUP' | 'SETUP_JACQUARD' | 'SETUP_SILK_PREP' | 'SETUP_WARP_DRAW' | 'SETUP_CALIBRATION' | 'WEAVING' | 'MAINTENANCE' | 'STOPPED' | 'WAITING_FOR_MATERIALS';
 export type DesignComplexity = 1 | 2 | 3 | 4 | 5;
 export type UserRole = 'COOPERATIVE' | 'SOLO_ARTISAN';
 
@@ -26,6 +26,7 @@ export interface SareeDesign {
   estimatedMarginPercent: number;
   region: string;
   category: string;
+  globalTrendMatch?: string | null;
 }
 
 export interface Loom {
@@ -49,6 +50,8 @@ export interface Loom {
   // Machine Capacity Extensions
   efficiencyPercent: number; // e.g., 105 for 105%
   maintenanceScore: number; // 0-100 (100 is perfect)
+  
+  productionModel?: 'KHDC_GOVT' | 'PRIVATE_COMMERCIAL';
 }
 
 export interface LedgerEntry {
@@ -100,6 +103,7 @@ export interface ProductionJob {
   expectedDeliveryDate: string;
   notes: string;
   status: 'Waiting' | 'Ready' | 'Scheduled' | 'Assigned' | 'Completed';
+  productionModel?: 'KHDC_GOVT' | 'PRIVATE_COMMERCIAL';
   
   // Estimates
   setupDays: number;

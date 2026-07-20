@@ -84,6 +84,7 @@ export default function CooperativeDashboard() {
     activeWeavers: looms.filter((l: any) => l.status === 'WEAVING' || l.status === 'WARP_SETUP').length,
     utilization: Math.round(((looms.filter((l: any) => l.status === 'WEAVING' || l.status === 'WARP_SETUP').length) / looms.length) * 100) || 0,
     workingCapital: financeStats?.workingCapital || 0,
+    wastePrevented: (looms.reduce((sum: number, l: any) => sum + (l.sareesCompleted || 0), 0) * 0.05 * 0.4).toFixed(2),
   };
 
   const alerts = [...systemAlerts.map((a: string) => ({ priority: 'medium' as const, type: 'Inventory Alert', loom: 'SYS', action: a, deadline: 'ASAP' }))];
@@ -152,7 +153,7 @@ export default function CooperativeDashboard() {
       </div>
 
       {/* ─── Top: KPIs ─── */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 mb-6 animate-slide-up-delay-1">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-3 mb-6 animate-slide-up-delay-1">
         <div className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
           <div className="flex items-center gap-2 text-emerald-600 mb-3">
             <Activity className="w-4 h-4" />
@@ -188,6 +189,15 @@ export default function CooperativeDashboard() {
           </div>
           <div className={`text-2xl font-light ${kpis.workingCapital < 0 ? 'text-rose-600' : 'text-slate-800'}`}>
             ₹{(kpis.workingCapital / 100000).toFixed(2)}L
+          </div>
+        </div>
+        <div className="bg-white rounded-xl p-4 border border-slate-100 shadow-sm">
+          <div className="flex items-center gap-2 text-emerald-600 mb-3">
+            <CheckCircle2 className="w-4 h-4" />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Waste Prevented</span>
+          </div>
+          <div className="text-2xl font-light text-emerald-700">
+            {kpis.wastePrevented} kg
           </div>
         </div>
         <div className={`rounded-xl p-4 border shadow-sm ${riskStyle}`}>

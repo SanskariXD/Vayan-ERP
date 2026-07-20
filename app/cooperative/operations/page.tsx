@@ -61,7 +61,7 @@ export default function LoomManagementPage() {
                       <span className={`px-2.5 py-1 text-[10px] font-bold rounded uppercase ${
                         loom.status === 'IDLE' ? 'bg-slate-100 text-slate-600' : 
                         loom.status === 'WEAVING' ? 'bg-emerald-100 text-emerald-700' : 
-                        loom.status === 'WARP_SETUP' ? 'bg-amber-100 text-amber-700' :
+                        (loom.status === 'WARP_SETUP' || loom.status.startsWith('SETUP_')) ? 'bg-amber-100 text-amber-700' :
                         loom.status === 'MAINTENANCE' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-600'
                       }`}>
                          {loom.status.replace('_', ' ')}
@@ -74,14 +74,34 @@ export default function LoomManagementPage() {
                          <div className="text-sm font-medium text-slate-800">
                             {loom.currentDesignId ? `Working on ${loom.currentDesignId}` : 'No active design'}
                          </div>
-                         {loom.currentDesignId && (
-                           <div className="w-full bg-slate-200 h-1.5 mt-2 rounded-full overflow-hidden">
-                              <div className="bg-indigo-500 h-full rounded-full" style={{ width: `${(loom.sareesCompleted / loom.targetSarees) * 100}%`}} />
+                         {loom.currentDesignId && (loom.status === 'WARP_SETUP' || loom.status.startsWith('SETUP_')) ? (
+                           <div className="mt-4">
+                              <div className="flex justify-between text-[10px] font-semibold text-slate-500 mb-1 px-1">
+                                 <span className={loom.status === 'SETUP_JACQUARD' ? 'text-indigo-600' : 'text-slate-400'}>Jacquard</span>
+                                 <span className={loom.status === 'SETUP_SILK_PREP' ? 'text-indigo-600' : 'text-slate-400'}>Silk Prep</span>
+                                 <span className={loom.status === 'SETUP_WARP_DRAW' ? 'text-indigo-600' : 'text-slate-400'}>Warp Draw</span>
+                                 <span className={loom.status === 'SETUP_CALIBRATION' ? 'text-indigo-600' : 'text-slate-400'}>Calibration</span>
+                              </div>
+                              <div className="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden flex">
+                                 <div className={`h-full ${loom.setupDaysRemaining <= 10 ? 'bg-indigo-500' : 'bg-indigo-200'}`} style={{ width: '25%' }} />
+                                 <div className={`h-full ${loom.setupDaysRemaining <= 6 ? 'bg-indigo-500' : loom.setupDaysRemaining <= 10 ? 'bg-indigo-200' : 'bg-transparent'}`} style={{ width: '25%' }} />
+                                 <div className={`h-full ${loom.setupDaysRemaining <= 2 ? 'bg-indigo-500' : loom.setupDaysRemaining <= 6 ? 'bg-indigo-200' : 'bg-transparent'}`} style={{ width: '25%' }} />
+                                 <div className={`h-full ${loom.setupDaysRemaining <= 0 ? 'bg-indigo-500' : loom.setupDaysRemaining <= 2 ? 'bg-indigo-200' : 'bg-transparent'}`} style={{ width: '25%' }} />
+                              </div>
+                              <div className="text-xs text-stone-500 mt-2 text-center">
+                                 {loom.setupDaysRemaining} Days Remaining
+                              </div>
                            </div>
-                         )}
-                         <div className="text-xs text-stone-500 mt-1">
-                            {loom.sareesCompleted} / {loom.targetSarees} Sarees
-                         </div>
+                         ) : loom.currentDesignId ? (
+                           <>
+                             <div className="w-full bg-slate-200 h-1.5 mt-2 rounded-full overflow-hidden">
+                                <div className="bg-indigo-500 h-full rounded-full" style={{ width: `${(loom.sareesCompleted / loom.targetSarees) * 100}%`}} />
+                             </div>
+                             <div className="text-xs text-stone-500 mt-1">
+                                {loom.sareesCompleted} / {loom.targetSarees} Sarees
+                             </div>
+                           </>
+                         ) : null}
                       </div>
 
                       <div className="flex items-center justify-between px-1">
@@ -96,7 +116,7 @@ export default function LoomManagementPage() {
                    <div className="border-t border-slate-100 pt-4 mt-auto">
                       <div className="text-[10px] font-bold text-stone-400 uppercase mb-3">Manual Override Console</div>
                       <div className="grid grid-cols-2 gap-2">
-                         {loom.status === 'WEAVING' || loom.status === 'WARP_SETUP' ? (
+                         {loom.status === 'WEAVING' || loom.status === 'WARP_SETUP' || loom.status.startsWith('SETUP_') ? (
                             <button 
                                onClick={() => handleTriggerEvent(loom.id, 'PRODUCTION', 'Production Paused', `Manager manually paused ${loom.id}`, 'Delay added', loom.maintenanceStatus, 'IDLE')}
                                className="py-1.5 flex justify-center items-center gap-1.5 text-xs font-semibold bg-amber-50 text-amber-700 hover:bg-amber-100 rounded-lg transition"

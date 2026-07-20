@@ -5,10 +5,21 @@ export function runProductionEngine(looms: Loom[]) {
   const completedSareesToday: { loomId: string, designId: string }[] = [];
 
   for (const loom of updatedLooms) {
-    if (loom.status === 'WARP_SETUP') {
+    if (loom.status === 'WARP_SETUP' || loom.status.startsWith('SETUP_')) {
       if (loom.setupDaysRemaining > 0) {
         loom.setupDaysRemaining -= 1;
+        
+        if (loom.setupDaysRemaining > 10) {
+          loom.status = 'SETUP_JACQUARD';
+        } else if (loom.setupDaysRemaining > 6) {
+          loom.status = 'SETUP_SILK_PREP';
+        } else if (loom.setupDaysRemaining > 2) {
+          loom.status = 'SETUP_WARP_DRAW';
+        } else if (loom.setupDaysRemaining > 0) {
+          loom.status = 'SETUP_CALIBRATION';
+        }
       }
+      
       if (loom.setupDaysRemaining <= 0) {
         loom.status = 'WEAVING';
       }
