@@ -22,6 +22,7 @@ interface SimulationStore {
   createWarp: (warp: any) => void;
   addPurchaseOrder: (po: any) => void;
   addMaterial: (mat: any) => void;
+  incrementSareeCount: (loomId: string) => void;
 }
 
 export const useSimulationStore = create<SimulationStore>((set, get) => {
@@ -164,6 +165,10 @@ export const useCoopStore = (selector: (state: any) => any) => {
     },
     addMaterial: (mat: any) => {
       engine.addMaterial(mat);
+    },
+
+    incrementSareeCount: (loomId: string) => {
+      engine.incrementSareeCount(loomId);
     },
     incrementSareeCount: (loomId: string) => {
       engine.incrementSareeCount(loomId);
